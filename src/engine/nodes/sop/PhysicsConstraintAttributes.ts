@@ -9,7 +9,7 @@
 import {TypedSopNode} from 'polygonjs-engine/src/engine/nodes/sop/_Base';
 import {InputCloneMode} from 'polygonjs-engine/src/engine/poly/InputCloneMode';
 import {CoreGroup} from 'polygonjs-engine/src/core/geometry/Group';
-import {RBDAttribute, RBD_SHAPES, RBDShape} from 'polygonjs-engine/src/core/physics/ammo/RBDBodyHelper';
+import {RBDAttribute, RBD_SHAPES, RBDShape} from '../../../core/physics/ammo/RBDBodyHelper';
 import {Mesh} from 'three/src/objects/Mesh';
 import {Vector3} from 'three/src/math/Vector3';
 import {CoreObject} from 'polygonjs-engine/src/core/geometry/Object';

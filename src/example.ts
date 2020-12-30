@@ -6,15 +6,15 @@ import {ExtendedGeoObjNode} from './engine/nodes/obj/ExtendedGeo';
 import {AllRegister} from 'polygonjs-engine/src/engine/poly/registers/All';
 AllRegister.run();
 // register nodes for this plugin
-import {PolygonjsPluginOcclusion} from './index';
-Poly.instance().pluginsRegister.register('polygonjs-plugin-occlusion', PolygonjsPluginOcclusion);
+import {PolygonjsPluginPhysics} from './index';
+Poly.instance().pluginsRegister.register('polygonjs-plugin-physics', PolygonjsPluginPhysics);
 
 // create a scene
 const scene = new PolyScene();
 
 // create a box
 const geo = scene.root.createNode('geo') as ExtendedGeoObjNode;
-const box = geo.createNode('box');
+const box = geo.createNode('roundedBox');
 box.p.size.set(0.63);
 
 // create points to instantiate boxes onto
@@ -40,7 +40,7 @@ boxTransformReset.p.mode.set(2);
 // add physics attributes
 const boxPhysicsAttributes = geo.createNode('physicsRbdAttributes');
 boxPhysicsAttributes.setInput(0, boxTransformReset);
-// vary the restituion
+// vary the restitution
 const boxAttribCreateRestitution = geo.createNode('attribCreate');
 boxAttribCreateRestitution.setInput(0, boxPhysicsAttributes);
 boxAttribCreateRestitution.p.name.set('restitution');

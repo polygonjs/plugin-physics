@@ -10,7 +10,6 @@
 import {TypedSopNode} from 'polygonjs-engine/src/engine/nodes/sop/_Base';
 import {CoreGroup} from 'polygonjs-engine/src/core/geometry/Group';
 import {AmmoRBDBodyHelper, RBDAttribute} from '../../../core/physics/ammo/RBDBodyHelper';
-import {InputCloneMode} from 'polygonjs-engine/src/engine/poly/InputCloneMode';
 import {BaseNodeType} from 'polygonjs-engine/src/engine/nodes/_Base';
 import {CoreObject} from 'polygonjs-engine/src/core/geometry/Object';
 import {CorePoint} from 'polygonjs-engine/src/core/geometry/Point';
@@ -18,15 +17,15 @@ import {AmmoForceHelper} from '../../../core/physics/ammo/ForceHelper';
 import Ammo from 'ammojs-typed';
 
 const NULL_ID = '';
-
+import {PhysicsSolverSopOperation} from '../../../core/operations/sop/PhysicsSolver';
 import {NodeParamsConfig, ParamConfig} from 'polygonjs-engine/src/engine/nodes/utils/params/ParamsConfig';
 import {Object3D} from 'three/src/core/Object3D';
 import {CoreType} from 'polygonjs-engine/src/core/Type';
+const DEFAULT = PhysicsSolverSopOperation.DEFAULT_PARAMS;
 class AmmoSolverSopParamsConfig extends NodeParamsConfig {
-	start_frame = ParamConfig.INTEGER(1);
-
-	gravity = ParamConfig.VECTOR3([0, -9.81, 0]);
-	max_substeps = ParamConfig.INTEGER(2, {
+	startFrame = ParamConfig.INTEGER(DEFAULT.startFrame);
+	gravity = ParamConfig.VECTOR3(DEFAULT.gravity.toArray());
+	maxSubsteps = ParamConfig.INTEGER(DEFAULT.maxSubsteps, {
 		range: [1, 10],
 		rangeLocked: [true, false],
 	});
@@ -76,7 +75,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		// and therefore the reseting the transform of the RBDs will be based on moved objects, which is wrong. Oh so very wrong.
 		// But we also set the cook controller to disallow_inputs_evaluation
 		// to ensure it is not cloned on every frame
-		this.io.inputs.init_inputs_cloned_state([InputCloneMode.ALWAYS, InputCloneMode.NEVER, InputCloneMode.NEVER]);
+		this.io.inputs.init_inputs_cloned_state(PhysicsSolverSopOperation.INPUT_CLONED_STATE);
 		this.cook_controller.disallow_inputs_evaluation();
 
 		// physics
@@ -103,7 +102,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	}
 
 	async cook(input_contents: CoreGroup[]) {
-		if (this.scene.frame == this.pv.start_frame) {
+		if (this.scene.frame == this.pv.startFrame) {
 			this.reset();
 		}
 		if (!this._input_init) {
@@ -200,7 +199,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 			return;
 		}
 
-		this.world?.stepSimulation(dt, this.pv.max_substeps);
+		this.world?.stepSimulation(dt, this.pv.maxSubsteps);
 		this._apply_custom_forces();
 		this._apply_rbd_update();
 		this._transform_core_objects_from_bodies();
@@ -319,6 +318,6 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		this.bodies = [];
 		this._objects_with_RBDs = [];
 		this._input_init = undefined;
-		this.scene.setFrame(this.pv.start_frame);
+		this.scene.setFrame(this.pv.startFrame);
 	}
 }
