@@ -71,7 +71,7 @@ module.exports = (env = {}) => {
 			// libraryTarget: 'commonjs2', // this is set in prod
 			// globalObject: 'this',
 			// libraryExport: 'default',
-			library: 'PolyPluginOcclusion',
+			library: 'PolyPluginPhysics',
 		},
 		resolve: {
 			// modules: [path.resolve(__dirname, '../../node_modules')],

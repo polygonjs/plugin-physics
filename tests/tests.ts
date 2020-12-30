@@ -1,4 +1,4 @@
 import 'qunit';
 
 QUnit.module('sop');
-import './engine/nodes/sop/Occlusion';
+import './engine/nodes/sop/PhysicsRbdAttributes';
