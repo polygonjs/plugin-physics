@@ -1,8 +1,6 @@
-# Polygonjs Occlusion Plugin
+# Polygonjs Physics Plugin
 
-This adds an Occlusion SOP node to the Polygonjs webgl engine.
-
-This wraps the work done in https://github.com/wwwtyro/geo-ambient-occlusion into a node that can be used with all the other nodes available on Polygonjs.
+This adds several Physics SOP nodes to the Polygonjs webgl engine.
 
 # run for development
 
