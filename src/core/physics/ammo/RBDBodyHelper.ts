@@ -167,7 +167,7 @@ export class AmmoRBDBodyHelper {
 	}
 
 	read_object_attribute<A extends AttribValue>(core_object: CoreObject, attrib_name: string, default_value: A): A {
-		const val = core_object.attrib_value(attrib_name) as A;
+		const val = core_object.attribValue(attrib_name) as A;
 		if (val == null) {
 			return default_value;
 		} else {

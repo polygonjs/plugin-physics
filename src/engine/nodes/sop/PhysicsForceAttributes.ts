@@ -70,11 +70,11 @@ export class PhysicsForceAttributesSopNode extends TypedSopNode<PhysicsForceAttr
 
 		const points = core_group.points();
 		for (let point of points) {
-			point.set_attrib_value(FORCE_TYPE_ATTRIBUTE_NAME, this.pv.type);
+			point.setAttribValue(FORCE_TYPE_ATTRIBUTE_NAME, this.pv.type);
 		}
 
 		this._apply_force_attributes(points, force_type);
-		this.set_core_group(input_contents[0]);
+		this.setCoreGroup(input_contents[0]);
 	}
 	private _apply_force_attributes(points: CorePoint[], force_type: ForceType) {
 		switch (force_type) {
@@ -94,21 +94,21 @@ export class PhysicsForceAttributesSopNode extends TypedSopNode<PhysicsForceAttr
 
 	private _apply_attributes_directional(points: CorePoint[]) {
 		for (let point of points) {
-			point.set_attrib_value(DirectionalForceAttribute.DIRECTION, this.pv.direction);
+			point.setAttribValue(DirectionalForceAttribute.DIRECTION, this.pv.direction);
 		}
 	}
 	private _apply_attributes_radial(points: CorePoint[]) {
 		for (let point of points) {
-			point.set_attrib_value(RadialForceAttribute.CENTER, point.position());
-			point.set_attrib_value(RadialForceAttribute.AMOUNT, this.pv.amount);
-			point.set_attrib_value(RadialForceAttribute.MAX_DISTANCE, this.pv.max_distance);
-			point.set_attrib_value(RadialForceAttribute.MAX_SPEED, this.pv.max_speed);
+			point.setAttribValue(RadialForceAttribute.CENTER, point.position());
+			point.setAttribValue(RadialForceAttribute.AMOUNT, this.pv.amount);
+			point.setAttribValue(RadialForceAttribute.MAX_DISTANCE, this.pv.max_distance);
+			point.setAttribValue(RadialForceAttribute.MAX_SPEED, this.pv.max_speed);
 		}
 	}
 	// private _apply_attributes_vortex(core_group: CoreGroup) {}
 
 	private _create_attributes_if_required<T extends ForceType>(core_group: CoreGroup, force_type: T) {
-		const core_geometries = core_group.core_geometries();
+		const core_geometries = core_group.coreGeometries();
 
 		const default_values = FORCE_DEFAULT_ATTRIBUTE_VALUES[force_type] as any;
 		const attributes = Object.keys(default_values);
@@ -117,12 +117,12 @@ export class PhysicsForceAttributesSopNode extends TypedSopNode<PhysicsForceAttr
 			const attribute = attributes[i];
 			const default_value: NumericAttribValue = default_values[attribute];
 			for (let core_geometry of core_geometries) {
-				if (!core_geometry.has_attrib(attribute)) {
+				if (!core_geometry.hasAttrib(attribute)) {
 					let size = 1;
 					if (CoreType.isArray(default_value)) {
 						size = default_value.length;
 					}
-					core_geometry.add_numeric_attrib(attribute, size, default_value);
+					core_geometry.addNumericAttrib(attribute, size, default_value);
 				}
 			}
 		}

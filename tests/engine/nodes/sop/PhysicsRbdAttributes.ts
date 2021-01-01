@@ -10,9 +10,9 @@ QUnit.test('physics rbd attributes simple', async (assert) => {
 	physicsRbdAttributes.setInput(0, box1);
 
 	let container;
-	container = await physicsRbdAttributes.request_container();
-	let core_group = container.core_content()!;
-	let object = core_group.objects_with_geo()[0];
+	container = await physicsRbdAttributes.requestContainer();
+	let core_group = container.coreContent()!;
+	let object = core_group.objectsWithGeo()[0];
 
 	const attributes = object.userData.attributes;
 	console.log(attributes);

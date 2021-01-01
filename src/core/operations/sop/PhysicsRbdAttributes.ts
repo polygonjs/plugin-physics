@@ -55,21 +55,21 @@ export class PhysicsRbdAttributesSopOperation extends BaseSopOperation {
 	}
 
 	private _add_object_attributes(core_group: CoreGroup, params: PhysicsRbdAttributesSopParams) {
-		const core_objects = core_group.core_objects();
+		const core_objects = core_group.coreObjects();
 		let core_object: CoreObject;
 		for (let i = 0; i < core_objects.length; i++) {
 			core_object = core_objects[i];
-			core_object.set_attrib_value(RBDAttribute.ACTIVE, params.active ? 1 : 0);
-			core_object.set_attrib_value(RBDAttribute.MASS, params.mass);
-			core_object.set_attrib_value(RBDAttribute.RESTITUTION, params.restitution);
-			core_object.set_attrib_value(RBDAttribute.DAMPING, params.damping);
-			core_object.set_attrib_value(RBDAttribute.ANGULAR_DAMPING, params.angularDamping);
-			core_object.set_attrib_value(RBDAttribute.FRICTION, params.friction);
-			core_object.set_attrib_value(RBDAttribute.SIMULATED, params.simulated);
+			core_object.setAttribValue(RBDAttribute.ACTIVE, params.active ? 1 : 0);
+			core_object.setAttribValue(RBDAttribute.MASS, params.mass);
+			core_object.setAttribValue(RBDAttribute.RESTITUTION, params.restitution);
+			core_object.setAttribValue(RBDAttribute.DAMPING, params.damping);
+			core_object.setAttribValue(RBDAttribute.ANGULAR_DAMPING, params.angularDamping);
+			core_object.setAttribValue(RBDAttribute.FRICTION, params.friction);
+			core_object.setAttribValue(RBDAttribute.SIMULATED, params.simulated);
 
 			if (params.addId == true) {
-				// core_object.set_attrib_value(RBDAttribute.ID, `${this.fullPath()}:${i}`);
-				core_object.set_attrib_value(RBDAttribute.ID, core_object.object().uuid);
+				// core_object.setAttribValue(RBDAttribute.ID, `${this.fullPath()}:${i}`);
+				core_object.setAttribValue(RBDAttribute.ID, core_object.object().uuid);
 			}
 
 			// shape
@@ -81,7 +81,7 @@ export class PhysicsRbdAttributesSopOperation extends BaseSopOperation {
 	private _object_q = new Quaternion();
 	private _object_s = new Vector3();
 	private _add_object_shape_specific_attributes(core_object: CoreObject, params: PhysicsRbdAttributesSopParams) {
-		core_object.set_attrib_value(RBDAttribute.SHAPE, params.shape);
+		core_object.setAttribValue(RBDAttribute.SHAPE, params.shape);
 		const shape = RBD_SHAPES[params.shape];
 		const object = core_object.object() as Mesh;
 		object.matrix.decompose(this._object_t, this._object_q, this._object_s);
@@ -93,7 +93,7 @@ export class PhysicsRbdAttributesSopOperation extends BaseSopOperation {
 				if (bbox) {
 					bbox.getSize(this._bbox_size);
 					this._bbox_size.multiply(this._object_s);
-					core_object.set_attrib_value(RBDAttribute.SHAPE_SIZE_BOX, this._bbox_size);
+					core_object.setAttribValue(RBDAttribute.SHAPE_SIZE_BOX, this._bbox_size);
 				}
 				return;
 			}
@@ -103,7 +103,7 @@ export class PhysicsRbdAttributesSopOperation extends BaseSopOperation {
 				const bounding_sphere = geometry.boundingSphere;
 				if (bounding_sphere) {
 					const diameter = 2 * bounding_sphere.radius * this._object_s.x;
-					core_object.set_attrib_value(RBDAttribute.SHAPE_SIZE_SPHERE, diameter);
+					core_object.setAttribValue(RBDAttribute.SHAPE_SIZE_SPHERE, diameter);
 				}
 				return;
 			}
@@ -112,7 +112,7 @@ export class PhysicsRbdAttributesSopOperation extends BaseSopOperation {
 	}
 	private _add_point_attributes(core_group: CoreGroup, params: PhysicsRbdAttributesSopParams) {
 		for (let core_point of core_group.points()) {
-			core_point.set_attrib_value(RBDAttribute.ACTIVE, params.active ? 1 : 0);
+			core_point.setAttribValue(RBDAttribute.ACTIVE, params.active ? 1 : 0);
 		}
 	}
 }

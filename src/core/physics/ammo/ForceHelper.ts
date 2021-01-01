@@ -66,7 +66,7 @@ export const FORCE_DEFAULT_ATTRIBUTE_VALUES = {
 
 export class AmmoForceHelper {
 	apply_force(core_point: CorePoint, bodies: Ammo.btRigidBody[]) {
-		const type_index = core_point.attrib_value(FORCE_TYPE_ATTRIBUTE_NAME);
+		const type_index = core_point.attribValue(FORCE_TYPE_ATTRIBUTE_NAME);
 		if (!CoreType.isNumber(type_index)) {
 			console.warn('force type is not a number:', type_index);
 			return;
@@ -114,12 +114,12 @@ export class AmmoForceHelper {
 		body.getMotionState().getWorldTransform(this._t);
 
 		const position = core_point.position();
-		const amount = core_point.attrib_value(RadialForceAttribute.AMOUNT);
+		const amount = core_point.attribValue(RadialForceAttribute.AMOUNT);
 		if (!CoreType.isNumber(amount)) {
 			console.warn('force amount is not a number:', amount);
 			return;
 		}
-		const max_distance = core_point.attrib_value(RadialForceAttribute.MAX_DISTANCE);
+		const max_distance = core_point.attribValue(RadialForceAttribute.MAX_DISTANCE);
 
 		const o = this._t.getOrigin();
 		this._impulse.setValue(o.x() - position.x, o.y() - position.y, o.z() - position.z);

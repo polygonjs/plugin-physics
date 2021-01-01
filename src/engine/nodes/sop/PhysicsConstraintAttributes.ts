@@ -71,24 +71,24 @@ export class PhysicsConstraintAttributesSopNode extends TypedSopNode<PhysicsCons
 		} else {
 			this._add_point_attributes(input_contents[0]);
 		}
-		this.set_core_group(input_contents[0]);
+		this.setCoreGroup(input_contents[0]);
 	}
 
 	private _add_object_attributes(core_group: CoreGroup) {
-		const core_objects = core_group.core_objects();
+		const core_objects = core_group.coreObjects();
 		let core_object: CoreObject;
 		for (let i = 0; i < core_objects.length; i++) {
 			core_object = core_objects[i];
-			core_object.set_attrib_value(RBDAttribute.ACTIVE, this.pv.active ? 1 : 0);
-			core_object.set_attrib_value(RBDAttribute.MASS, this.pv.mass);
-			core_object.set_attrib_value(RBDAttribute.RESTITUTION, this.pv.restitution);
-			core_object.set_attrib_value(RBDAttribute.DAMPING, this.pv.damping);
-			core_object.set_attrib_value(RBDAttribute.ANGULAR_DAMPING, this.pv.angular_damping);
-			core_object.set_attrib_value(RBDAttribute.FRICTION, this.pv.friction);
-			core_object.set_attrib_value(RBDAttribute.SIMULATED, this.pv.simulated);
+			core_object.setAttribValue(RBDAttribute.ACTIVE, this.pv.active ? 1 : 0);
+			core_object.setAttribValue(RBDAttribute.MASS, this.pv.mass);
+			core_object.setAttribValue(RBDAttribute.RESTITUTION, this.pv.restitution);
+			core_object.setAttribValue(RBDAttribute.DAMPING, this.pv.damping);
+			core_object.setAttribValue(RBDAttribute.ANGULAR_DAMPING, this.pv.angular_damping);
+			core_object.setAttribValue(RBDAttribute.FRICTION, this.pv.friction);
+			core_object.setAttribValue(RBDAttribute.SIMULATED, this.pv.simulated);
 
 			if (this.pv.add_id == true) {
-				core_object.set_attrib_value(RBDAttribute.ID, `${this.fullPath()}:${i}`);
+				core_object.setAttribValue(RBDAttribute.ID, `${this.fullPath()}:${i}`);
 			}
 
 			// shape
@@ -97,7 +97,7 @@ export class PhysicsConstraintAttributesSopNode extends TypedSopNode<PhysicsCons
 	}
 	private _bbox_size = new Vector3();
 	private _add_object_shape_specific_attributes(core_object: CoreObject) {
-		core_object.set_attrib_value(RBDAttribute.SHAPE, this.pv.shape);
+		core_object.setAttribValue(RBDAttribute.SHAPE, this.pv.shape);
 		const shape = RBD_SHAPES[this.pv.shape];
 		switch (shape) {
 			case RBDShape.BOX: {
@@ -106,7 +106,7 @@ export class PhysicsConstraintAttributesSopNode extends TypedSopNode<PhysicsCons
 				const bbox = geometry.boundingBox;
 				if (bbox) {
 					bbox.getSize(this._bbox_size);
-					core_object.set_attrib_value(RBDAttribute.SHAPE_SIZE_BOX, this._bbox_size);
+					core_object.setAttribValue(RBDAttribute.SHAPE_SIZE_BOX, this._bbox_size);
 				}
 				return;
 			}
@@ -115,7 +115,7 @@ export class PhysicsConstraintAttributesSopNode extends TypedSopNode<PhysicsCons
 				geometry.computeBoundingSphere();
 				const bounding_sphere = geometry.boundingSphere;
 				if (bounding_sphere) {
-					core_object.set_attrib_value(RBDAttribute.SHAPE_SIZE_SPHERE, bounding_sphere.radius * 2);
+					core_object.setAttribValue(RBDAttribute.SHAPE_SIZE_SPHERE, bounding_sphere.radius * 2);
 				}
 				return;
 			}
@@ -124,7 +124,7 @@ export class PhysicsConstraintAttributesSopNode extends TypedSopNode<PhysicsCons
 	}
 	private _add_point_attributes(core_group: CoreGroup) {
 		for (let core_point of core_group.points()) {
-			core_point.set_attrib_value(RBDAttribute.ACTIVE, this.pv.active ? 1 : 0);
+			core_point.setAttribValue(RBDAttribute.ACTIVE, this.pv.active ? 1 : 0);
 		}
 	}
 }

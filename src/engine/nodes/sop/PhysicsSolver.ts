@@ -117,7 +117,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		this._input_force_points = await this._fetch_input_points(1);
 		this._input_attributes_update = await this._fetch_input_objects(2);
 		this.simulate(0.05);
-		this.set_objects(this._objects_with_RBDs);
+		this.setObjects(this._objects_with_RBDs);
 	}
 
 	private async _fetch_input_objects(input_index: number) {
@@ -125,9 +125,9 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		if (input_node) {
 			const container = await this.container_controller.request_input_container(input_index);
 			if (container) {
-				const core_group = container.core_content_cloned();
+				const core_group = container.coreContentCloned();
 				if (core_group) {
-					return core_group.core_objects();
+					return core_group.coreObjects();
 				}
 			}
 		}
@@ -138,7 +138,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		if (input_node) {
 			const container = await this.container_controller.request_input_container(input_index);
 			if (container) {
-				const core_group = container.core_content_cloned();
+				const core_group = container.coreContentCloned();
 				if (core_group) {
 					return core_group.points();
 				}
@@ -220,7 +220,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 			return;
 		}
 		for (let core_object of this._input_attributes_update) {
-			const id = core_object.attrib_value(RBDAttribute.ID);
+			const id = core_object.attribValue(RBDAttribute.ID);
 			if (CoreType.isString(id)) {
 				const body = this._bodies_by_id.get(id);
 				if (body) {
@@ -232,7 +232,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	}
 	private _update_active_state(id: string, body: Ammo.btRigidBody, core_object: CoreObject) {
 		const current_state = this._bodies_active_state_by_id.get(id);
-		const active_attr = core_object.attrib_value(RBDAttribute.ACTIVE);
+		const active_attr = core_object.attribValue(RBDAttribute.ACTIVE);
 		const new_state = active_attr == 1;
 		if (current_state != new_state) {
 			if (new_state == true) {
@@ -262,8 +262,8 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	// 	if (!this._body_helper) {
 	// 		return;
 	// 	}
-	// 	for (let core_object of core_group.core_objects()) {
-	// 		const id = core_object.attrib_value(RBDAttribute.ID);
+	// 	for (let core_object of core_group.coreObjects()) {
+	// 		const id = core_object.attribValue(RBDAttribute.ID);
 	// 		if (CoreType.isString(id)) {
 	// 			const body = this._bodies_by_id.get(id);
 	// 			if (!body) {
