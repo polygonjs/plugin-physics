@@ -1,8 +1,8 @@
 import {AllRegister} from 'polygonjs-engine/src/engine/poly/registers/All';
 AllRegister.run();
-import {PolygonjsPluginPhysics} from '../src/index';
+import {polyPluginPhysics} from '../src/index';
 import {Poly} from 'polygonjs-engine/src/engine/Poly';
-Poly.instance().pluginsRegister.register('polygonjs-plugin-physics', PolygonjsPluginPhysics);
+Poly.instance().registerPlugin(polyPluginPhysics);
 
 import './helpers/setup';
 import './tests';
