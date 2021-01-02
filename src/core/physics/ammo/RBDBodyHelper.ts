@@ -6,6 +6,7 @@ import {Quaternion} from 'three/src/math/Quaternion';
 import {Matrix4} from 'three/src/math/Matrix4';
 import {TypeAssert} from 'polygonjs-engine/src/engine/poly/Assert';
 import {Object3D} from 'three/src/core/Object3D';
+import {AttribValue, Number3} from 'polygonjs-engine/src/types/GlobalTypes';
 
 export enum RBDAttribute {
 	ACTIVE = 'active',

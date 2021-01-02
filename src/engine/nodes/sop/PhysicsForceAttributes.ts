@@ -34,6 +34,7 @@ import {CoreGroup} from 'polygonjs-engine/src/core/geometry/Group';
 import {CorePoint} from 'polygonjs-engine/src/core/geometry/Point';
 import {TypeAssert} from 'polygonjs-engine/src/engine/poly/Assert';
 import {CoreType} from 'polygonjs-engine/src/core/Type';
+import {NumericAttribValue} from 'polygonjs-engine/src/types/GlobalTypes';
 class PhysicsForceAttributesSopParamsConfig extends NodeParamsConfig {
 	type = ParamConfig.INTEGER(FORCE_TYPES.indexOf(ForceType.DIRECTIONAL), {
 		menu: {

@@ -2,6 +2,7 @@ import Ammo from 'ammojs-typed';
 import {CorePoint} from 'polygonjs-engine/src/core/geometry/Point';
 import {TypeAssert} from 'polygonjs-engine/src/engine/poly/Assert';
 import {CoreType} from 'polygonjs-engine/src/core/Type';
+import {Number3} from 'polygonjs-engine/src/types/GlobalTypes';
 
 export enum ForceType {
 	DIRECTIONAL = 'directional',
