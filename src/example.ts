@@ -49,7 +49,7 @@ boxAttribCreateRestitution.p.value1.set('rand(@ptnum+254)');
 // rotate boxes
 const boxTransform = geo.createNode('transform');
 boxTransform.setInput(0, boxAttribCreateRestitution);
-boxTransform.p.apply_on.set(1); // apply to objects
+boxTransform.p.applyOn.set(1); // apply to objects
 boxTransform.p.r.x.set(35);
 
 // create ground
