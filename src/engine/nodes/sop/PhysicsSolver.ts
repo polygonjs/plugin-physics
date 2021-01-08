@@ -79,7 +79,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		this.cook_controller.disallow_inputs_evaluation();
 
 		// physics
-		this.add_graph_input(this.scene.time_controller.graph_node);
+		this.add_graph_input(this.scene.timeController.graph_node);
 		Ammo(Ammo).then(() => {
 			this.prepare();
 		});
