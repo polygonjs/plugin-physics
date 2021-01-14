@@ -7,13 +7,13 @@ import {AllRegister} from 'polygonjs-engine/src/engine/poly/registers/All';
 AllRegister.run();
 // register nodes for this plugin
 import {polyPluginPhysics} from './index';
-Poly.instance().registerPlugin(polyPluginPhysics);
+Poly.registerPlugin(polyPluginPhysics);
 
 // create a scene
 const scene = new PolyScene();
 
 // create a box
-const geo = scene.root.createNode('geo') as ExtendedGeoObjNode;
+const geo = scene.root().createNode('geo') as ExtendedGeoObjNode;
 const box = geo.createNode('roundedBox');
 box.p.size.set(0.63);
 
@@ -78,10 +78,10 @@ physicsSolver.setInput(0, merge);
 physicsSolver.flags.display.set(true);
 
 // add a light
-scene.root.createNode('hemisphereLight');
+scene.root().createNode('hemisphereLight');
 
 // create a camera
-const perspectiveCamera1 = scene.root.createNode('perspectiveCamera');
+const perspectiveCamera1 = scene.root().createNode('perspectiveCamera');
 perspectiveCamera1.p.t.set([5, 5, 5]);
 // add orbitControls
 const events1 = perspectiveCamera1.createNode('events');

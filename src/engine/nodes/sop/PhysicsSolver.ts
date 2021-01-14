@@ -76,10 +76,10 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		// But we also set the cook controller to disallow_inputs_evaluation
 		// to ensure it is not cloned on every frame
 		this.io.inputs.init_inputs_cloned_state(PhysicsSolverSopOperation.INPUT_CLONED_STATE);
-		this.cook_controller.disallow_inputs_evaluation();
+		this.cookController.disallow_inputs_evaluation();
 
 		// physics
-		this.add_graph_input(this.scene.timeController.graph_node);
+		this.addGraphInput(this.scene().timeController.graph_node);
 		Ammo(Ammo).then(() => {
 			this.prepare();
 		});
@@ -102,7 +102,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	}
 
 	async cook(input_contents: CoreGroup[]) {
-		if (this.scene.frame == this.pv.startFrame) {
+		if (this.scene().frame() == this.pv.startFrame) {
 			this.reset();
 		}
 		if (!this._input_init) {
@@ -318,6 +318,6 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		this.bodies = [];
 		this._objects_with_RBDs = [];
 		this._input_init = undefined;
-		this.scene.setFrame(this.pv.startFrame);
+		this.scene().setFrame(this.pv.startFrame);
 	}
 }

@@ -3,7 +3,7 @@ import {ExtendedGeoObjNode} from '../../../../src/engine/nodes/obj/ExtendedGeo';
 
 QUnit.test('physics rbd attributes simple', async (assert) => {
 	const scene = new PolyScene();
-	const geo1 = scene.root.createNode('geo') as ExtendedGeoObjNode;
+	const geo1 = scene.root().createNode('geo') as ExtendedGeoObjNode;
 
 	const box1 = geo1.createNode('box');
 	const physicsRbdAttributes = geo1.createNode('physicsRbdAttributes');
