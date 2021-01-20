@@ -67,15 +67,15 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		return ['RBDs', 'Forces', 'Updated RBD Attributes'];
 	}
 
-	initialize_node() {
-		this.io.inputs.set_count(1, 3);
+	initializeNode() {
+		this.io.inputs.setCount(1, 3);
 
 		// this has to clone for now, to allow for reposition the input core_objects
 		// when re-initializing the sim. If we do not clone, the objects will be modified,
 		// and therefore the reseting the transform of the RBDs will be based on moved objects, which is wrong. Oh so very wrong.
 		// But we also set the cook controller to disallow_inputs_evaluation
 		// to ensure it is not cloned on every frame
-		this.io.inputs.init_inputs_cloned_state(PhysicsSolverSopOperation.INPUT_CLONED_STATE);
+		this.io.inputs.initInputsClonedState(PhysicsSolverSopOperation.INPUT_CLONED_STATE);
 		this.cookController.disallow_inputs_evaluation();
 
 		// physics
