@@ -93,6 +93,6 @@ perspectiveCamera1.createViewer(document.getElementById('app')!);
 // start play
 scene.play();
 
-// make some noes globals to access in html controls
+// make some nodes globals to access in html controls
 (window as any).scene = scene;
 (window as any).plane = plane;
