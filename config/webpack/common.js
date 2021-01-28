@@ -5,12 +5,9 @@ const TYPESCRIPT_TRANSPILE_ONLY = FAST_COMPILE;
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const webpack = require('webpack');
 
 // loaders
 const ts = require('./loaders/ts');
-
-const POLYGONJS_VERSION = JSON.stringify(require('../../package.json').version);
 
 const plugins = [
 	new CleanWebpackPlugin(),
@@ -18,10 +15,6 @@ const plugins = [
 		title: 'Index',
 		// filename: 'index.html',
 		chunks: ['all'],
-	}),
-
-	new webpack.DefinePlugin({
-		__POLYGONJS_VERSION__: POLYGONJS_VERSION,
 	}),
 ];
 
