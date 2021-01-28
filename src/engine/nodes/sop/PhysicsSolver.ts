@@ -7,20 +7,20 @@
  *
  */
 // https://stackblitz.com/edit/ammojs-typed-falling-cubes?file=simulation.ts
-import {TypedSopNode} from 'polygonjs-engine/src/engine/nodes/sop/_Base';
-import {CoreGroup} from 'polygonjs-engine/src/core/geometry/Group';
+import {TypedSopNode} from '@polygonjs/polygonjs/dist/src/engine/nodes/sop/_Base';
+import {CoreGroup} from '@polygonjs/polygonjs/dist/src/core/geometry/Group';
 import {AmmoRBDBodyHelper, RBDAttribute} from '../../../core/physics/ammo/RBDBodyHelper';
-import {BaseNodeType} from 'polygonjs-engine/src/engine/nodes/_Base';
-import {CoreObject} from 'polygonjs-engine/src/core/geometry/Object';
-import {CorePoint} from 'polygonjs-engine/src/core/geometry/Point';
+import {BaseNodeType} from '@polygonjs/polygonjs/dist/src/engine/nodes/_Base';
+import {CoreObject} from '@polygonjs/polygonjs/dist/src/core/geometry/Object';
+import {CorePoint} from '@polygonjs/polygonjs/dist/src/core/geometry/Point';
 import {AmmoForceHelper} from '../../../core/physics/ammo/ForceHelper';
 import Ammo from 'ammojs-typed';
 
 const NULL_ID = '';
 import {PhysicsSolverSopOperation} from '../../../core/operations/sop/PhysicsSolver';
-import {NodeParamsConfig, ParamConfig} from 'polygonjs-engine/src/engine/nodes/utils/params/ParamsConfig';
+import {NodeParamsConfig, ParamConfig} from '@polygonjs/polygonjs/dist/src/engine/nodes/utils/params/ParamsConfig';
 import {Object3D} from 'three/src/core/Object3D';
-import {CoreType} from 'polygonjs-engine/src/core/Type';
+import {CoreType} from '@polygonjs/polygonjs/dist/src/core/Type';
 const DEFAULT = PhysicsSolverSopOperation.DEFAULT_PARAMS;
 class AmmoSolverSopParamsConfig extends NodeParamsConfig {
 	startFrame = ParamConfig.INTEGER(DEFAULT.startFrame);

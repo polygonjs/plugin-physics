@@ -6,8 +6,8 @@
  *
  *
  */
-import {TypedSopNode} from 'polygonjs-engine/src/engine/nodes/sop/_Base';
-import {InputCloneMode} from 'polygonjs-engine/src/engine/poly/InputCloneMode';
+import {TypedSopNode} from '@polygonjs/polygonjs/dist/src/engine/nodes/sop/_Base';
+import {InputCloneMode} from '@polygonjs/polygonjs/dist/src/engine/poly/InputCloneMode';
 import {
 	DirectionalForceAttribute,
 	RadialForceAttribute,
@@ -28,13 +28,13 @@ function visible_for_radial(options: VisibleIfParamOptions = {}): ParamOptions {
 	return visible_for_type(ForceType.RADIAL, options);
 }
 
-import {NodeParamsConfig, ParamConfig} from 'polygonjs-engine/src/engine/nodes/utils/params/ParamsConfig';
-import {ParamOptions, VisibleIfParamOptions} from 'polygonjs-engine/src/engine/params/utils/OptionsController';
-import {CoreGroup} from 'polygonjs-engine/src/core/geometry/Group';
-import {CorePoint} from 'polygonjs-engine/src/core/geometry/Point';
-import {TypeAssert} from 'polygonjs-engine/src/engine/poly/Assert';
-import {CoreType} from 'polygonjs-engine/src/core/Type';
-import {NumericAttribValue} from 'polygonjs-engine/src/types/GlobalTypes';
+import {NodeParamsConfig, ParamConfig} from '@polygonjs/polygonjs/dist/src/engine/nodes/utils/params/ParamsConfig';
+import {ParamOptions, VisibleIfParamOptions} from '@polygonjs/polygonjs/dist/src/engine/params/utils/OptionsController';
+import {CoreGroup} from '@polygonjs/polygonjs/dist/src/core/geometry/Group';
+import {CorePoint} from '@polygonjs/polygonjs/dist/src/core/geometry/Point';
+import {TypeAssert} from '@polygonjs/polygonjs/dist/src/engine/poly/Assert';
+import {CoreType} from '@polygonjs/polygonjs/dist/src/core/Type';
+import {NumericAttribValue} from '@polygonjs/polygonjs/dist/src/types/GlobalTypes';
 class PhysicsForceAttributesSopParamsConfig extends NodeParamsConfig {
 	type = ParamConfig.INTEGER(FORCE_TYPES.indexOf(ForceType.DIRECTIONAL), {
 		menu: {

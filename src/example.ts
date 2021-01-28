@@ -1,9 +1,9 @@
-import {Poly} from 'polygonjs-engine/src/engine/Poly';
-import {PolyScene} from 'polygonjs-engine/src/engine/scene/PolyScene';
+import {Poly} from '@polygonjs/polygonjs/dist/src/engine/Poly';
+import {PolyScene} from '@polygonjs/polygonjs/dist/src/engine/scene/PolyScene';
 import {ExtendedGeoObjNode} from './engine/nodes/obj/ExtendedGeo';
 
 // register all nodes
-import {AllRegister} from 'polygonjs-engine/src/engine/poly/registers/All';
+import {AllRegister} from '@polygonjs/polygonjs/dist/src/engine/poly/registers/All';
 AllRegister.run();
 // register nodes for this plugin
 import {polyPluginPhysics} from './index';

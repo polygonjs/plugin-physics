@@ -1,13 +1,13 @@
-import {BaseSopOperation} from 'polygonjs-engine/src/core/operations/sop/_Base';
-import {DefaultOperationParams} from 'polygonjs-engine/src/core/operations/_Base';
-import {CoreGroup} from 'polygonjs-engine/src/core/geometry/Group';
-import {InputCloneMode} from 'polygonjs-engine/src/engine/poly/InputCloneMode';
+import {BaseSopOperation} from '@polygonjs/polygonjs/dist/src/core/operations/sop/_Base';
+import {DefaultOperationParams} from '@polygonjs/polygonjs/dist/src/core/operations/_Base';
+import {CoreGroup} from '@polygonjs/polygonjs/dist/src/core/geometry/Group';
+import {InputCloneMode} from '@polygonjs/polygonjs/dist/src/engine/poly/InputCloneMode';
 import {Vector3} from 'three/src/math/Vector3';
 import {Quaternion} from 'three/src/math/Quaternion';
 import {Mesh} from 'three/src/objects/Mesh';
-import {CoreObject} from 'polygonjs-engine/src/core/geometry/Object';
+import {CoreObject} from '@polygonjs/polygonjs/dist/src/core/geometry/Object';
 import {RBDAttribute, RBD_SHAPES, RBDShape} from '../../../core/physics/ammo/RBDBodyHelper';
-import {TypeAssert} from 'polygonjs-engine/src/engine/poly/Assert';
+import {TypeAssert} from '@polygonjs/polygonjs/dist/src/engine/poly/Assert';
 
 export enum RBDAttributeMode {
 	OBJECTS = 'objects',

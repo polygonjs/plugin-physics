@@ -1,12 +1,12 @@
 import Ammo from 'ammojs-typed';
 import {CollisionFlag} from './Constant';
-import {CoreObject} from 'polygonjs-engine/src/core/geometry/Object';
+import {CoreObject} from '@polygonjs/polygonjs/dist/src/core/geometry/Object';
 import {Vector3} from 'three/src/math/Vector3';
 import {Quaternion} from 'three/src/math/Quaternion';
 import {Matrix4} from 'three/src/math/Matrix4';
-import {TypeAssert} from 'polygonjs-engine/src/engine/poly/Assert';
+import {TypeAssert} from '@polygonjs/polygonjs/dist/src/engine/poly/Assert';
 import {Object3D} from 'three/src/core/Object3D';
-import {AttribValue, Number3} from 'polygonjs-engine/src/types/GlobalTypes';
+import {AttribValue, Number3} from '@polygonjs/polygonjs/dist/src/types/GlobalTypes';
 
 export enum RBDAttribute {
 	ACTIVE = 'active',

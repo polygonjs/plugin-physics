@@ -1,7 +1,7 @@
-import {BaseSopOperation} from 'polygonjs-engine/src/core/operations/sop/_Base';
-import {DefaultOperationParams} from 'polygonjs-engine/src/core/operations/_Base';
-import {CoreGroup} from 'polygonjs-engine/src/core/geometry/Group';
-import {InputCloneMode} from 'polygonjs-engine/src/engine/poly/InputCloneMode';
+import {BaseSopOperation} from '@polygonjs/polygonjs/dist/src/core/operations/sop/_Base';
+import {DefaultOperationParams} from '@polygonjs/polygonjs/dist/src/core/operations/_Base';
+import {CoreGroup} from '@polygonjs/polygonjs/dist/src/core/geometry/Group';
+import {InputCloneMode} from '@polygonjs/polygonjs/dist/src/engine/poly/InputCloneMode';
 import {Vector3} from 'three/src/math/Vector3';
 
 export enum RBDAttributeMode {

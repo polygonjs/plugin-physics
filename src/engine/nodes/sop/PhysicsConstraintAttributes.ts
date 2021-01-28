@@ -6,14 +6,14 @@
  *
  *
  */
-import {TypedSopNode} from 'polygonjs-engine/src/engine/nodes/sop/_Base';
-import {InputCloneMode} from 'polygonjs-engine/src/engine/poly/InputCloneMode';
-import {CoreGroup} from 'polygonjs-engine/src/core/geometry/Group';
+import {TypedSopNode} from '@polygonjs/polygonjs/dist/src/engine/nodes/sop/_Base';
+import {InputCloneMode} from '@polygonjs/polygonjs/dist/src/engine/poly/InputCloneMode';
+import {CoreGroup} from '@polygonjs/polygonjs/dist/src/core/geometry/Group';
 import {RBDAttribute, RBD_SHAPES, RBDShape} from '../../../core/physics/ammo/RBDBodyHelper';
 import {Mesh} from 'three/src/objects/Mesh';
 import {Vector3} from 'three/src/math/Vector3';
-import {CoreObject} from 'polygonjs-engine/src/core/geometry/Object';
-import {TypeAssert} from 'polygonjs-engine/src/engine/poly/Assert';
+import {CoreObject} from '@polygonjs/polygonjs/dist/src/core/geometry/Object';
+import {TypeAssert} from '@polygonjs/polygonjs/dist/src/engine/poly/Assert';
 
 enum RBDAttributeMode {
 	OBJECTS = 'objects',
@@ -21,7 +21,7 @@ enum RBDAttributeMode {
 }
 const RBD_ATTRIBUTE_MODES: Array<RBDAttributeMode> = [RBDAttributeMode.OBJECTS, RBDAttributeMode.POINTS];
 
-import {NodeParamsConfig, ParamConfig} from 'polygonjs-engine/src/engine/nodes/utils/params/ParamsConfig';
+import {NodeParamsConfig, ParamConfig} from '@polygonjs/polygonjs/dist/src/engine/nodes/utils/params/ParamsConfig';
 class PhysicsConstraintAttributesSopParamsConfig extends NodeParamsConfig {
 	mode = ParamConfig.INTEGER(RBD_ATTRIBUTE_MODES.indexOf(RBDAttributeMode.OBJECTS), {
 		menu: {
@@ -57,7 +57,7 @@ const ParamsConfig = new PhysicsConstraintAttributesSopParamsConfig();
 export class PhysicsConstraintAttributesSopNode extends TypedSopNode<PhysicsConstraintAttributesSopParamsConfig> {
 	params_config = ParamsConfig;
 	static type() {
-		return 'physics_constraint_attributes';
+		return 'physicsConstraintAttributes';
 	}
 
 	initializeNode() {

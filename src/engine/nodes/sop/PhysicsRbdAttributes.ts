@@ -6,12 +6,12 @@
  *
  *
  */
-import {TypedSopNode} from 'polygonjs-engine/src/engine/nodes/sop/_Base';
-import {InputCloneMode} from 'polygonjs-engine/src/engine/poly/InputCloneMode';
-import {CoreGroup} from 'polygonjs-engine/src//core/geometry/Group';
+import {TypedSopNode} from '@polygonjs/polygonjs/dist/src/engine/nodes/sop/_Base';
+import {InputCloneMode} from '@polygonjs/polygonjs/dist/src/engine/poly/InputCloneMode';
+import {CoreGroup} from '@polygonjs/polygonjs/dist/src//core/geometry/Group';
 import {RBD_SHAPES} from '../../../core/physics/ammo/RBDBodyHelper';
 import {PhysicsRbdAttributesSopOperation, RBD_ATTRIBUTE_MODES} from '../../../core/operations/sop/PhysicsRbdAttributes';
-import {NodeParamsConfig, ParamConfig} from 'polygonjs-engine/src/engine/nodes/utils/params/ParamsConfig';
+import {NodeParamsConfig, ParamConfig} from '@polygonjs/polygonjs/dist/src/engine/nodes/utils/params/ParamsConfig';
 const DEFAULT = PhysicsRbdAttributesSopOperation.DEFAULT_PARAMS;
 class PhysicsRBDAttributesSopParamsConfig extends NodeParamsConfig {
 	mode = ParamConfig.INTEGER(DEFAULT.mode, {

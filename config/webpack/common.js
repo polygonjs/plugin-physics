@@ -14,6 +14,7 @@ const webpack = require('webpack');
 // loaders
 const glsl = require('./loaders/glsl');
 const ts = require('./loaders/ts');
+const babel = require('./loaders/babel');
 
 const POLYGONJS_VERSION = JSON.stringify(require('../../package.json').version);
 
@@ -82,6 +83,7 @@ module.exports = (env = {}) => {
 				// engine
 				ts(env, TYPESCRIPT_TRANSPILE_ONLY),
 				glsl,
+				babel,
 			],
 		},
 	};

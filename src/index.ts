@@ -1,14 +1,11 @@
-import {PolyEngine} from 'polygonjs-engine/src/engine/Poly';
-import {CATEGORY_SOP} from 'polygonjs-engine/src/engine/poly/registers/nodes/Category';
-
-import {ExtendedGeoNodeChildrenMap} from './ExtendedGeoNodeChildrenMap';
-export {ExtendedGeoNodeChildrenMap};
+import {PolyEngine} from '@polygonjs/polygonjs/dist/src/engine/Poly';
+import {CATEGORY_SOP} from '@polygonjs/polygonjs/dist/src/engine/poly/registers/nodes/Category';
 
 import {PhysicsRbdAttributesSopOperation} from './core/operations/sop/PhysicsRbdAttributes';
 import {PhysicsForceAttributesSopNode} from './engine/nodes/sop/PhysicsForceAttributes';
 import {PhysicsRbdAttributesSopNode} from './engine/nodes/sop/PhysicsRbdAttributes';
 import {PhysicsSolverSopNode} from './engine/nodes/sop/PhysicsSolver';
-import {PolyPlugin} from 'polygonjs-engine/src/engine/poly/registers/plugins/Plugin';
+import {PolyPlugin} from '@polygonjs/polygonjs/dist/src/engine/poly/registers/plugins/Plugin';
 function PolygonjsPluginPhysics(poly: PolyEngine) {
 	poly.registerOperation(PhysicsRbdAttributesSopOperation);
 	poly.registerNode(PhysicsForceAttributesSopNode, CATEGORY_SOP.PHYSICS);

@@ -4,6 +4,7 @@ node_modules/
 public/
 tests/
 dist/tests
+dist/node_modules
 config/
 .eslintignore
 .eslintrc.js

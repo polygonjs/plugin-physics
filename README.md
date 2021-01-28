@@ -1,22 +1,28 @@
 # Polygonjs Physics Plugin
 
-This adds several Physics SOP nodes to the Polygonjs webgl engine.
+This adds several nodes to handle physics in the [Polygonjs webgl engine](https://polygonjs.com).
 
-# run for development
+-   Sop/PhysicsSolver: computes the input geometries and attributes and solves the simulation at every frame
+-   Sop/PhysicsRbdAttributes: creates attributes necessary for rigid body simulations
+-   Sop/PhysicsForceAttributes: creates attributes to define forces
+-   Sop/PhysicsConstraintAttributes: create constraints (very early WIP)
 
-Ensure you have `node` and `yarn` installed, then run the following in the root folder of the repository:
+See [example scene](https://github.com/polygonjs/example-plugin-physics):
 
--   run `yarn`
--   run `npm start`
--   open `http://localhost:8080/example`
+![scene with physics](https://github.com/polygonjs/example-plugin-physics/blob/main/doc/physics_examples.jpg?raw=true)
 
-# testing
+# Install
 
--   run `yarn`
--   run `npm start`
--   open `http://localhost:8080/test`
+Import the plugin:
 
-# build
+`yarn add @polygonjs/plugin-physics`
 
--   run `yarn`
--   run `npm run build`
+And register the plugin in the function `configurePolygonjs` in the file `PolyConfig.js` so that the physics nodes can be accessible in both the editor and your exported scene:
+
+```js
+import {polyPluginPhysics} from '@polygonjs/plugin-physics/dist/src/index';
+
+export function configurePolygonjs(poly) {
+	poly.registerPlugin(polyPluginPhysics);
+}
+```
