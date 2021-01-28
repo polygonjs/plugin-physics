@@ -6,6 +6,8 @@ This adds several nodes to handle physics in the [Polygonjs webgl engine](https:
 -   **Sop/PhysicsRbdAttributes**: creates attributes necessary for rigid body simulations
 -   **Sop/PhysicsForceAttributes**: creates attributes to define forces
 
+This is currently using Ammo from [https://github.com/giniedp/ammojs-typed](https://github.com/giniedp/ammojs-typed).
+
 See [example scene](https://github.com/polygonjs/example-plugin-physics):
 
 ![scene with physics](https://github.com/polygonjs/example-plugin-physics/blob/main/doc/physics_examples.jpg?raw=true)
