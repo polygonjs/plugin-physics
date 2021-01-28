@@ -2,10 +2,9 @@
 
 This adds several nodes to handle physics in the [Polygonjs webgl engine](https://polygonjs.com).
 
--   Sop/PhysicsSolver: computes the input geometries and attributes and solves the simulation at every frame
--   Sop/PhysicsRbdAttributes: creates attributes necessary for rigid body simulations
--   Sop/PhysicsForceAttributes: creates attributes to define forces
--   Sop/PhysicsConstraintAttributes: create constraints (very early WIP)
+-   **Sop/PhysicsSolver**: computes the input geometries and attributes and solves the simulation at every frame
+-   **Sop/PhysicsRbdAttributes**: creates attributes necessary for rigid body simulations
+-   **Sop/PhysicsForceAttributes**: creates attributes to define forces
 
 See [example scene](https://github.com/polygonjs/example-plugin-physics):
 
