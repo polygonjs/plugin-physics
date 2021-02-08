@@ -164,7 +164,6 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	// 	const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, myMotionState, shape, localInertia);
 	// 	const body = new Ammo.btRigidBody(rbInfo);
 	// 	body.setRestitution(1);
-	// 	// console.log("mass", body.setM)
 
 	// 	this.world.addRigidBody(body);
 	// 	// this.bodies.push(body);
@@ -278,7 +277,6 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		world: Ammo.btDiscreteDynamicsWorld
 	) {
 		const id = body_helper.read_object_attribute(core_object, RBDAttribute.ID, NULL_ID);
-		console.log('_add_rbd_from_object', id);
 		if (id == NULL_ID) {
 			console.warn('no id for RBD');
 		}
@@ -307,7 +305,6 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		node.reset();
 	}
 	private reset() {
-		console.log('reset', this.bodies.length);
 		if (!this.world) {
 			console.warn('no world created, aborting reset');
 			return;

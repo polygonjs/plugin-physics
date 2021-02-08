@@ -6,11 +6,12 @@ import {Quaternion} from 'three/src/math/Quaternion';
 import {Matrix4} from 'three/src/math/Matrix4';
 import {TypeAssert} from '@polygonjs/polygonjs/dist/src/engine/poly/Assert';
 import {Object3D} from 'three/src/core/Object3D';
-import {AttribValue, Number3} from '@polygonjs/polygonjs/dist/src/types/GlobalTypes';
+import {AttribValue} from '@polygonjs/polygonjs/dist/src/types/GlobalTypes';
+import {CoreType} from '@polygonjs/polygonjs/dist/src/core/Type';
 
 export enum RBDAttribute {
 	ACTIVE = 'active',
-	ANGULAR_DAMPING = 'angular_damping',
+	ANGULAR_DAMPING = 'angularDamping',
 	DAMPING = 'damping',
 	FRICTION = 'friction',
 	ID = 'id',
@@ -18,8 +19,8 @@ export enum RBDAttribute {
 	RESTITUTION = 'restitution',
 	SIMULATED = 'simulated',
 	SHAPE = 'shape',
-	SHAPE_SIZE_SPHERE = 'shape_size_sphere',
-	SHAPE_SIZE_BOX = 'shape_size_box',
+	SHAPE_SIZE_SPHERE = 'shapeSizeSphere',
+	SHAPE_SIZE_BOX = 'shapeSizeBox',
 }
 export enum RBDShape {
 	BOX = 'box',
@@ -38,7 +39,7 @@ export const RBD_SHAPES: Array<RBDShape> = [
 // also investigate btMultiSphereShape, btConvexHullShape, btCompoundShape, btConcaveShape, btConvexShape,
 
 export class AmmoRBDBodyHelper {
-	private _default_shape_size_box: Number3 = [1, 1, 1];
+	private _default_shape_size_box: Vector3 = new Vector3(1, 1, 1);
 	create_body(core_object: CoreObject) {
 		// read attributes
 
@@ -117,7 +118,6 @@ export class AmmoRBDBodyHelper {
 	transform_body_from_core_object(body: Ammo.btRigidBody, core_object: CoreObject) {
 		const matrix = core_object.object().matrix;
 		matrix.decompose(this._t, this._q, this._s);
-		console.log('this._t', this._t);
 
 		const rbd_transform = body.getWorldTransform();
 		const origin = rbd_transform.getOrigin();
@@ -141,7 +141,6 @@ export class AmmoRBDBodyHelper {
 		this._read_quat.set(r.x(), r.y(), r.z(), r.w());
 
 		this._read_mat4.identity();
-		console.log('o.x(), o.y(), o.z()', o.x(), o.y(), o.z());
 		object.position.set(o.x(), o.y(), o.z());
 		object.rotation.setFromQuaternion(this._read_quat);
 
@@ -158,11 +157,24 @@ export class AmmoRBDBodyHelper {
 					RBDAttribute.SHAPE_SIZE_BOX,
 					this._default_shape_size_box
 				);
-				const size_v = new Ammo.btVector3(shape_size[0] * 0.5, shape_size[1] * 0.5, shape_size[2] * 0.5);
+				if (
+					!(
+						CoreType.isNumber(shape_size.x) &&
+						CoreType.isNumber(shape_size.y) &&
+						CoreType.isNumber(shape_size.z)
+					)
+				) {
+					console.warn('shape_size attribute expected to be a vector', shape_size);
+				}
+
+				const size_v = new Ammo.btVector3(shape_size.x * 0.5, shape_size.y * 0.5, shape_size.z * 0.5);
 				return new Ammo.btBoxShape(size_v);
 			}
 			case RBDShape.SPHERE: {
 				const shape_size = this.read_object_attribute(core_object, RBDAttribute.SHAPE_SIZE_SPHERE, 0.5);
+				if (!CoreType.isNumber(shape_size)) {
+					console.warn('shape_size attribute expected to be a number', shape_size);
+				}
 				return new Ammo.btSphereShape(shape_size * 0.5);
 			}
 		}

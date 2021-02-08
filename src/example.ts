@@ -19,7 +19,7 @@ box.p.size.set(0.63);
 
 // create points to instantiate boxes onto
 const plane = geo.createNode('plane');
-plane.p.size.set([1, 1]);
+plane.p.size.set([4, 4]);
 const planeTransform = geo.createNode('transform');
 planeTransform.setInput(0, plane);
 planeTransform.p.t.y.set(3);
@@ -53,23 +53,23 @@ boxTransform.p.applyOn.set(1); // apply to objects
 boxTransform.p.r.x.set(35);
 
 // create ground
-// const boxGround = geo.createNode('box');
-// const boxGroundTransform = geo.createNode('transform');
-// boxGroundTransform.setInput(0, boxGround);
-// boxGroundTransform.p.t.y.set(-2);
-// boxGroundTransform.p.s.set([5, 1, 10]);
-// const boxGroundTransformReset = geo.createNode('transformReset');
-// boxGroundTransformReset.setInput(0, boxGroundTransform);
-// boxGroundTransformReset.p.mode.set(2);
-// const groundPhysicsAttributes = geo.createNode('physicsRbdAttributes');
-// groundPhysicsAttributes.setInput(0, boxGroundTransformReset);
-// groundPhysicsAttributes.p.active.set(0);
-// groundPhysicsAttributes.p.mass.set(100000); // inactive objects currently require a high mass
+const boxGround = geo.createNode('box');
+const boxGroundTransform = geo.createNode('transform');
+boxGroundTransform.setInput(0, boxGround);
+boxGroundTransform.p.t.y.set(-2);
+boxGroundTransform.p.s.set([5, 1, 10]);
+const boxGroundTransformReset = geo.createNode('transformReset');
+boxGroundTransformReset.setInput(0, boxGroundTransform);
+boxGroundTransformReset.p.mode.set(2);
+const groundPhysicsAttributes = geo.createNode('physicsRbdAttributes');
+groundPhysicsAttributes.setInput(0, boxGroundTransformReset);
+groundPhysicsAttributes.p.active.set(0);
+groundPhysicsAttributes.p.mass.set(100000); // inactive objects currently require a high mass
 
 // merge objects
 const merge = geo.createNode('merge');
 merge.p.compact.set(0);
-// merge.setInput(0, groundPhysicsAttributes);
+merge.setInput(0, groundPhysicsAttributes);
 merge.setInput(1, boxTransform);
 
 // create solver
@@ -91,8 +91,7 @@ perspectiveCamera1.p.controls.setNode(orbitsControls);
 perspectiveCamera1.createViewer(document.getElementById('app')!);
 
 // start play
-// scene.play();
-// console.log('play');
+scene.play();
 
 // make some nodes globals to access in html controls
 (window as any).scene = scene;
