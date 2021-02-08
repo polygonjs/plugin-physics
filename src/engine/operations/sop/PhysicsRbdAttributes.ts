@@ -1,5 +1,5 @@
-import {BaseSopOperation} from '@polygonjs/polygonjs/dist/src/core/operations/sop/_Base';
-import {DefaultOperationParams} from '@polygonjs/polygonjs/dist/src/core/operations/_Base';
+import {BaseSopOperation} from '@polygonjs/polygonjs/dist/src/engine/operations/sop/_Base';
+import {DefaultOperationParams} from '@polygonjs/polygonjs/dist/src/engine/operations/_Base';
 import {CoreGroup} from '@polygonjs/polygonjs/dist/src/core/geometry/Group';
 import {InputCloneMode} from '@polygonjs/polygonjs/dist/src/engine/poly/InputCloneMode';
 import {Vector3} from 'three/src/math/Vector3';
@@ -56,6 +56,7 @@ export class PhysicsRbdAttributesSopOperation extends BaseSopOperation {
 
 	private _add_object_attributes(core_group: CoreGroup, params: PhysicsRbdAttributesSopParams) {
 		const core_objects = core_group.coreObjects();
+		console.log(core_objects.length, core_objects);
 		let core_object: CoreObject;
 		for (let i = 0; i < core_objects.length; i++) {
 			core_object = core_objects[i];
@@ -66,6 +67,7 @@ export class PhysicsRbdAttributesSopOperation extends BaseSopOperation {
 			core_object.setAttribValue(RBDAttribute.ANGULAR_DAMPING, params.angularDamping);
 			core_object.setAttribValue(RBDAttribute.FRICTION, params.friction);
 			core_object.setAttribValue(RBDAttribute.SIMULATED, params.simulated);
+			console.log(params);
 
 			if (params.addId == true) {
 				// core_object.setAttribValue(RBDAttribute.ID, `${this.fullPath()}:${i}`);

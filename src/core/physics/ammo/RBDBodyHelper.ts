@@ -117,6 +117,7 @@ export class AmmoRBDBodyHelper {
 	transform_body_from_core_object(body: Ammo.btRigidBody, core_object: CoreObject) {
 		const matrix = core_object.object().matrix;
 		matrix.decompose(this._t, this._q, this._s);
+		console.log('this._t', this._t);
 
 		const rbd_transform = body.getWorldTransform();
 		const origin = rbd_transform.getOrigin();
@@ -140,6 +141,7 @@ export class AmmoRBDBodyHelper {
 		this._read_quat.set(r.x(), r.y(), r.z(), r.w());
 
 		this._read_mat4.identity();
+		console.log('o.x(), o.y(), o.z()', o.x(), o.y(), o.z());
 		object.position.set(o.x(), o.y(), o.z());
 		object.rotation.setFromQuaternion(this._read_quat);
 

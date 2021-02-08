@@ -1,7 +1,7 @@
 import {PolyEngine} from '@polygonjs/polygonjs/dist/src/engine/Poly';
 import {CATEGORY_SOP} from '@polygonjs/polygonjs/dist/src/engine/poly/registers/nodes/Category';
 
-import {PhysicsRbdAttributesSopOperation} from './core/operations/sop/PhysicsRbdAttributes';
+import {PhysicsRbdAttributesSopOperation} from './engine/operations/sop/PhysicsRbdAttributes';
 import {PhysicsForceAttributesSopNode} from './engine/nodes/sop/PhysicsForceAttributes';
 import {PhysicsRbdAttributesSopNode} from './engine/nodes/sop/PhysicsRbdAttributes';
 import {PhysicsSolverSopNode} from './engine/nodes/sop/PhysicsSolver';

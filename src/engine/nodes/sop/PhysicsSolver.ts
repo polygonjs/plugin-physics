@@ -17,7 +17,7 @@ import {AmmoForceHelper} from '../../../core/physics/ammo/ForceHelper';
 import Ammo from 'ammojs-typed';
 
 const NULL_ID = '';
-import {PhysicsSolverSopOperation} from '../../../core/operations/sop/PhysicsSolver';
+import {PhysicsSolverSopOperation} from '../../operations/sop/PhysicsSolver';
 import {NodeParamsConfig, ParamConfig} from '@polygonjs/polygonjs/dist/src/engine/nodes/utils/params/ParamsConfig';
 import {Object3D} from 'three/src/core/Object3D';
 import {CoreType} from '@polygonjs/polygonjs/dist/src/core/Type';
@@ -79,7 +79,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		this.cookController.disallow_inputs_evaluation();
 
 		// physics
-		this.addGraphInput(this.scene().timeController.graph_node);
+		this.addGraphInput(this.scene().timeController.graphNode);
 		Ammo(Ammo).then(() => {
 			this.prepare();
 		});
@@ -198,7 +198,6 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		if (!(this._input_init && this._body_helper)) {
 			return;
 		}
-
 		this.world?.stepSimulation(dt, this.pv.maxSubsteps);
 		this._apply_custom_forces();
 		this._apply_rbd_update();
@@ -279,6 +278,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		world: Ammo.btDiscreteDynamicsWorld
 	) {
 		const id = body_helper.read_object_attribute(core_object, RBDAttribute.ID, NULL_ID);
+		console.log('_add_rbd_from_object', id);
 		if (id == NULL_ID) {
 			console.warn('no id for RBD');
 		}
@@ -307,7 +307,9 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		node.reset();
 	}
 	private reset() {
+		console.log('reset', this.bodies.length);
 		if (!this.world) {
+			console.warn('no world created, aborting reset');
 			return;
 		}
 		for (let i = 0; i < this.bodies.length; i++) {
