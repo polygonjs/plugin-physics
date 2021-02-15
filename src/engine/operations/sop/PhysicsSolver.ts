@@ -3,6 +3,7 @@ import {DefaultOperationParams} from '@polygonjs/polygonjs/dist/src/engine/opera
 import {CoreGroup} from '@polygonjs/polygonjs/dist/src/core/geometry/Group';
 import {InputCloneMode} from '@polygonjs/polygonjs/dist/src/engine/poly/InputCloneMode';
 import {Vector3} from 'three/src/math/Vector3';
+import {TimeController} from '@polygonjs/polygonjs/dist/src/engine/scene/utils/TimeController';
 
 export enum RBDAttributeMode {
 	OBJECTS = 'objects',
@@ -18,7 +19,7 @@ interface PhysicsSolverSopParams extends DefaultOperationParams {
 
 export class PhysicsSolverSopOperation extends BaseSopOperation {
 	static readonly DEFAULT_PARAMS: PhysicsSolverSopParams = {
-		startFrame: 1,
+		startFrame: TimeController.START_FRAME,
 		gravity: new Vector3(0, -9.81, 0),
 		maxSubsteps: 2,
 	};

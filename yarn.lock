@@ -68,16 +68,16 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@polygonjs/polygonjs@^1.1.60":
-  version "1.1.60"
-  resolved "https://registry.yarnpkg.com/@polygonjs/polygonjs/-/polygonjs-1.1.60.tgz#30c4780429a0539740bc2da48d250ca5e5a07f14"
-  integrity sha512-xvpNNW5UCFQ3/jZFWpKxE56FV7QR97F21ZX8myemaeDnKg57kIc53hl06hUXnE08Gh/682kBZdvosqyKqaUoew==
+"@polygonjs/polygonjs@^1.1.67":
+  version "1.1.67"
+  resolved "https://registry.yarnpkg.com/@polygonjs/polygonjs/-/polygonjs-1.1.67.tgz#0d5bbdaf2444a6522e627478a0831c426a13268a"
+  integrity sha512-xPGW9l0iF4cI8Lh+RJLWSNHh9S1UVmRp5SB9H+QUzViABNQzHEgaNjmmy0ZY6VE0qBSOFYfQ0U2aJT6J4cM7Bw==
   dependencies:
     gsap "3.5.1"
     jsep "0.3.5"
     lodash "4.17.20"
     opentype.js "1.3.3"
-    three "0.124.0"
+    three "0.125.1"
 
 "@types/anymatch@*":
   version "1.3.1"
@@ -4728,10 +4728,10 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
-three@0.124.0:
-  version "0.124.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.124.0.tgz#14ab1a26ba6c56e51190e1b55695cd3c1e69ea55"
-  integrity sha512-ROXp1Ly7YyF+jC910DQyAWj++Qlw2lQv0qwYLNQwdDbjk4bsOXAfGO92wYTMPNei1GMJUmCxSxc3MjGBTS09Rg==
+three@0.125.1:
+  version "0.125.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.125.1.tgz#6eedbc5003b843fd5b6c48b3e61bfbd86bd3e0b2"
+  integrity sha512-7CbiSHZOc18ChhVZU8wQ2g9F2KHJqiG7+ND56/XMrJC2XZMmu+dZFeLFl380c5JwKZGHTOkBQzioZVkI7Jumhg==
 
 through2@^2.0.0:
   version "2.0.5"

@@ -32,14 +32,9 @@ const copy = geo.createNode('copy');
 copy.setInput(0, box);
 copy.setInput(1, jitter);
 
-// reset transforms
-const boxTransformReset = geo.createNode('transformReset');
-boxTransformReset.setInput(0, copy);
-boxTransformReset.p.mode.set(2);
-
 // add physics attributes
 const boxPhysicsAttributes = geo.createNode('physicsRbdAttributes');
-boxPhysicsAttributes.setInput(0, boxTransformReset);
+boxPhysicsAttributes.setInput(0, copy);
 // vary the restitution
 const boxAttribCreateRestitution = geo.createNode('attribCreate');
 boxAttribCreateRestitution.setInput(0, boxPhysicsAttributes);

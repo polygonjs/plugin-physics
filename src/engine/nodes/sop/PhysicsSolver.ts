@@ -123,7 +123,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	private async _fetch_input_objects(input_index: number) {
 		const input_node = this.io.inputs.input(input_index);
 		if (input_node) {
-			const container = await this.container_controller.requestInputContainer(input_index);
+			const container = await this.containerController.requestInputContainer(input_index);
 			if (container) {
 				const core_group = container.coreContentCloned();
 				if (core_group) {
@@ -136,7 +136,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	private async _fetch_input_points(input_index: number) {
 		const input_node = this.io.inputs.input(input_index);
 		if (input_node) {
-			const container = await this.container_controller.requestInputContainer(input_index);
+			const container = await this.containerController.requestInputContainer(input_index);
 			if (container) {
 				const core_group = container.coreContentCloned();
 				if (core_group) {
