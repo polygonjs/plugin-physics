@@ -55,7 +55,7 @@ class PhysicsConstraintAttributesSopParamsConfig extends NodeParamsConfig {
 const ParamsConfig = new PhysicsConstraintAttributesSopParamsConfig();
 
 export class PhysicsConstraintAttributesSopNode extends TypedSopNode<PhysicsConstraintAttributesSopParamsConfig> {
-	params_config = ParamsConfig;
+	paramsConfig = ParamsConfig;
 	static type() {
 		return 'physicsConstraintAttributes';
 	}

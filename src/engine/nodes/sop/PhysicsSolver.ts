@@ -38,7 +38,7 @@ class AmmoSolverSopParamsConfig extends NodeParamsConfig {
 const ParamsConfig = new AmmoSolverSopParamsConfig();
 
 export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig> {
-	params_config = ParamsConfig;
+	paramsConfig = ParamsConfig;
 	static type() {
 		return 'physicsSolver';
 	}
@@ -63,7 +63,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	private _input_attributes_update: CoreObject[] | undefined;
 	private _objects_with_RBDs: Object3D[] = [];
 
-	static displayed_input_names(): string[] {
+	static displayedInputNames(): string[] {
 		return ['RBDs', 'Forces', 'Updated RBD Attributes'];
 	}
 

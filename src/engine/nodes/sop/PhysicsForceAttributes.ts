@@ -54,7 +54,7 @@ class PhysicsForceAttributesSopParamsConfig extends NodeParamsConfig {
 const ParamsConfig = new PhysicsForceAttributesSopParamsConfig();
 
 export class PhysicsForceAttributesSopNode extends TypedSopNode<PhysicsForceAttributesSopParamsConfig> {
-	params_config = ParamsConfig;
+	paramsConfig = ParamsConfig;
 	static type() {
 		return 'physicsForceAttributes';
 	}

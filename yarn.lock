@@ -68,10 +68,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@polygonjs/polygonjs@^1.1.67":
-  version "1.1.67"
-  resolved "https://registry.yarnpkg.com/@polygonjs/polygonjs/-/polygonjs-1.1.67.tgz#0d5bbdaf2444a6522e627478a0831c426a13268a"
-  integrity sha512-xPGW9l0iF4cI8Lh+RJLWSNHh9S1UVmRp5SB9H+QUzViABNQzHEgaNjmmy0ZY6VE0qBSOFYfQ0U2aJT6J4cM7Bw==
+"@polygonjs/polygonjs@^1.1.117":
+  version "1.1.117"
+  resolved "https://registry.yarnpkg.com/@polygonjs/polygonjs/-/polygonjs-1.1.117.tgz#376f679f349ebfbc3cabe6fb99b148613b595163"
+  integrity sha512-NsFfBLkJsla0gioIFjJPtXOyLsUg26byIJAsR9U8/irwBVdaTp7DjeS1e2ZLgBM7/Yn7qt+aIBz1TQKptDg0Mw==
   dependencies:
     gsap "3.5.1"
     jsep "0.3.5"

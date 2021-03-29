@@ -7,6 +7,8 @@ import {AllRegister} from '@polygonjs/polygonjs/dist/src/engine/poly/registers/A
 AllRegister.run();
 // register nodes for this plugin
 import {polyPluginPhysics} from './index';
+import {TransformTargetType} from '@polygonjs/polygonjs/dist/src/core/Transform';
+import {TransformObjectMode} from '@polygonjs/polygonjs/dist/src/engine/operations/sop/Transform';
 Poly.registerPlugin(polyPluginPhysics);
 
 // create a scene
@@ -19,7 +21,7 @@ box.p.size.set(0.63);
 
 // create points to instantiate boxes onto
 const plane = geo.createNode('plane');
-plane.p.size.set([4, 4]);
+plane.p.size.set([8, 8]);
 const planeTransform = geo.createNode('transform');
 planeTransform.setInput(0, plane);
 planeTransform.p.t.y.set(3);
@@ -44,7 +46,8 @@ boxAttribCreateRestitution.p.value1.set('rand(@ptnum+254)');
 // rotate boxes
 const boxTransform = geo.createNode('transform');
 boxTransform.setInput(0, boxAttribCreateRestitution);
-boxTransform.p.applyOn.set(1); // apply to objects
+boxTransform.setApplyOn(TransformTargetType.OBJECTS);
+boxTransform.setObjectMode(TransformObjectMode.UPDATE_MATRIX);
 boxTransform.p.r.x.set(35);
 
 // create ground
@@ -52,7 +55,7 @@ const boxGround = geo.createNode('box');
 const boxGroundTransform = geo.createNode('transform');
 boxGroundTransform.setInput(0, boxGround);
 boxGroundTransform.p.t.y.set(-2);
-boxGroundTransform.p.s.set([5, 1, 10]);
+boxGroundTransform.p.s.set([5, 1, 50]);
 const boxGroundTransformReset = geo.createNode('transformReset');
 boxGroundTransformReset.setInput(0, boxGroundTransform);
 boxGroundTransformReset.p.mode.set(2);
@@ -77,7 +80,7 @@ scene.root().createNode('hemisphereLight');
 
 // create a camera
 const perspectiveCamera1 = scene.root().createNode('perspectiveCamera');
-perspectiveCamera1.p.t.set([5, 5, 5]);
+perspectiveCamera1.p.t.set([15, 15, 15]);
 // add orbitControls
 const events1 = perspectiveCamera1.createNode('events');
 const orbitsControls = events1.createNode('cameraOrbitControls');

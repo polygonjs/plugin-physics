@@ -17,11 +17,9 @@ QUnit.test('physics rbd attributes simple for box', async (assert) => {
 	let object = core_group.objectsWithGeo()[0];
 
 	const attributes = object.userData.attributes;
-	console.log(attributes);
 
 	assert.equal(attributes[RBDAttribute.ACTIVE], 1);
 	assert.equal(attributes[RBDAttribute.ANGULAR_DAMPING], 0);
-	console.log(attributes[RBDAttribute.SHAPE_SIZE_BOX]);
 	assert.deepEqual(attributes[RBDAttribute.SHAPE_SIZE_BOX].toArray(), [1, 1, 1]);
 });
 
@@ -40,7 +38,6 @@ QUnit.test('physics rbd attributes simple for sphere', async (assert) => {
 	let object = core_group.objectsWithGeo()[0];
 
 	const attributes = object.userData.attributes;
-	console.log(attributes);
 
 	assert.equal(attributes[RBDAttribute.ACTIVE], 1);
 	assert.equal(attributes[RBDAttribute.ANGULAR_DAMPING], 0);

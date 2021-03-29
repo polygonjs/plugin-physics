@@ -1,6 +1,6 @@
 {
 	"name": "@polygonjs/plugin-physics",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"engines": {
 		"node": ">=12.16.1",
 		"yarn": ">=1.22.4"
@@ -41,7 +41,7 @@
 	},
 	"dependencies": {
 		"ammojs-typed": "1.0.2",
-		"@polygonjs/polygonjs": "^1.1.67"
+		"@polygonjs/polygonjs": "^1.1.118"
 	},
 	"devDependencies": {
 		"@types/lodash": "4.14.166",

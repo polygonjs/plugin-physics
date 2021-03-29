@@ -46,7 +46,7 @@ class PhysicsRBDAttributesSopParamsConfig extends NodeParamsConfig {
 const ParamsConfig = new PhysicsRBDAttributesSopParamsConfig();
 
 export class PhysicsRbdAttributesSopNode extends TypedSopNode<PhysicsRBDAttributesSopParamsConfig> {
-	params_config = ParamsConfig;
+	paramsConfig = ParamsConfig;
 	static type() {
 		return 'physicsRbdAttributes';
 	}
