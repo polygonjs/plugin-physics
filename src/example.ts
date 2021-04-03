@@ -82,7 +82,7 @@ scene.root().createNode('hemisphereLight');
 const perspectiveCamera1 = scene.root().createNode('perspectiveCamera');
 perspectiveCamera1.p.t.set([15, 15, 15]);
 // add orbitControls
-const events1 = perspectiveCamera1.createNode('events');
+const events1 = perspectiveCamera1.createNode('eventsNetwork');
 const orbitsControls = events1.createNode('cameraOrbitControls');
 perspectiveCamera1.p.controls.setNode(orbitsControls);
 
