@@ -12,7 +12,7 @@ QUnit.test('physics rbd attributes simple for box', async (assert) => {
 	physicsRbdAttributes.p.shape.set(RBD_SHAPES.indexOf(RBDShape.BOX));
 
 	let container;
-	container = await physicsRbdAttributes.requestContainer();
+	container = await physicsRbdAttributes.compute();
 	let core_group = container.coreContent()!;
 	let object = core_group.objectsWithGeo()[0];
 
@@ -33,7 +33,7 @@ QUnit.test('physics rbd attributes simple for sphere', async (assert) => {
 	physicsRbdAttributes.p.shape.set(RBD_SHAPES.indexOf(RBDShape.SPHERE));
 
 	let container;
-	container = await physicsRbdAttributes.requestContainer();
+	container = await physicsRbdAttributes.compute();
 	let core_group = container.coreContent()!;
 	let object = core_group.objectsWithGeo()[0];
 
