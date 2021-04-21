@@ -1,16 +1,15 @@
 import Ammo from 'ammojs-typed';
-import {CollisionFlag} from './Constant';
 import {Vector3} from 'three/src/math/Vector3';
 import {Quaternion} from 'three/src/math/Quaternion';
 import {TypeAssert} from '@polygonjs/polygonjs/dist/src/engine/poly/Assert';
-import {AttribValue} from '@polygonjs/polygonjs/dist/src/types/GlobalTypes';
 import {CoreType} from '@polygonjs/polygonjs/dist/src/core/Type';
 import {CorePoint} from '@polygonjs/polygonjs/dist/src/core/geometry/Point';
-import {RBDAttribute, RBDShape, RBD_SHAPES} from './RBDBodyHelper';
+import {RBDAttribute, RBDShape, RBD_SHAPES} from './_Base';
 import {CoreGeometry} from '@polygonjs/polygonjs/dist/src/core/geometry/Geometry';
 import {InstanceAttrib} from '@polygonjs/polygonjs/dist/src/core/geometry/Instancer';
+import {RBDBaseHelper} from './_Base';
 
-export class AmmoRBDPointBodyHelper {
+export class AmmoRBDPointBodyHelper extends RBDBaseHelper<CorePoint> {
 	private _default_shape_size_box: Vector3 = new Vector3(1, 1, 1);
 	private _corePointByBody: WeakMap<Ammo.btRigidBody, CorePoint> = new WeakMap();
 	createBody(corePoint: CorePoint) {
@@ -45,47 +44,11 @@ export class AmmoRBDPointBodyHelper {
 		body.setFriction(friction);
 		return body;
 	}
-	// It is crucial to make the body kinematic AFTER it being added to the physics world.
-	// Otherwise, when it switches state, such as starting kinematic and then becoming dynamic,
-	// It will not be assigned to the correct collition group, and therefore will not collide with
-	// static bodies
-	finalizeBody(body: Ammo.btRigidBody, corePoint: CorePoint) {
-		const active = this.readAttribute<boolean>(corePoint, RBDAttribute.ACTIVE, true);
-		if (!active) {
-			//} || mass == 0) {
-			this.makeKinematic(body);
-		}
-
-		// set transform
-		this.transformBodyFromPoint(body, corePoint);
-
-		return body;
-	}
-
-	makeKinematic(body: Ammo.btRigidBody) {
-		body.setCollisionFlags(CollisionFlag.KINEMATIC_OBJECT);
-		// body.setActivationState(BodyState.DISABLE_DEACTIVATION);
-	}
-	makeActive(body: Ammo.btRigidBody, world: Ammo.btDiscreteDynamicsWorld) {
-		body.setCollisionFlags(0);
-		// body.setActivationState(BodyState.ACTIVE_TAG);
-		// body.activate(true);
-		// body.setMassProps(1, new Ammo.btVector3(0, 0, 0));
-		// body.setGravity(world.getGravity());
-	}
-	isKinematic(body: Ammo.btRigidBody) {
-		return body.isKinematicObject();
-		// return body.getCollisionFlags() == CollisionFlag.KINEMATIC_OBJECT;
-	}
-	isActive(body: Ammo.btRigidBody) {
-		// return body.isActive();
-		return !this.isKinematic(body);
-	}
 
 	private _t = new Vector3();
 	private _q = new Quaternion();
 	// private _s = new Vector3();
-	transformBodyFromPoint(body: Ammo.btRigidBody, corePoint: CorePoint) {
+	transformBodyFromEntity(body: Ammo.btRigidBody, corePoint: CorePoint) {
 		const position = this.readAttribute(corePoint, InstanceAttrib.POSITION, this._t);
 		const orientation = this.readAttribute(corePoint, InstanceAttrib.ORIENTATION, this._q);
 
@@ -171,14 +134,5 @@ export class AmmoRBDPointBodyHelper {
 			}
 		}
 		TypeAssert.unreachable(shape);
-	}
-
-	readAttribute<A extends AttribValue>(corePoint: CorePoint, attrib_name: string, default_value: A): A {
-		const val = corePoint.attribValue(attrib_name) as A;
-		if (val == null) {
-			return default_value;
-		} else {
-			return val;
-		}
 	}
 }

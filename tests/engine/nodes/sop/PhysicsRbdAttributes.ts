@@ -1,5 +1,5 @@
 import {PolyScene} from '@polygonjs/polygonjs/dist/src/engine/scene/PolyScene';
-import {RBDAttribute, RBDShape, RBD_SHAPES} from '../../../../src/core/physics/ammo/RBDBodyHelper';
+import {RBDAttribute, RBDShape, RBD_SHAPES} from '../../../../src/core/physics/ammo/helper/_Base';
 import {ExtendedGeoObjNode} from '../../../../src/engine/nodes/obj/ExtendedGeo';
 
 QUnit.test('physics rbd attributes simple for box', async (assert) => {

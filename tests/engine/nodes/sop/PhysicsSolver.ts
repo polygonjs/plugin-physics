@@ -1,6 +1,6 @@
 import {TransformTargetType} from '@polygonjs/polygonjs/dist/src/core/Transform';
 import {PolyScene} from '@polygonjs/polygonjs/dist/src/engine/scene/PolyScene';
-import {RBDShape, RBD_SHAPES} from '../../../../src/core/physics/ammo/RBDBodyHelper';
+import {RBDShape, RBD_SHAPES} from '../../../../src/core/physics/ammo/helper/_Base';
 import {ExtendedGeoObjNode} from '../../../../src/engine/nodes/obj/ExtendedGeo';
 import {RBDAttributeMode} from '../../../../src/engine/operations/sop/PhysicsRbdAttributes';
 

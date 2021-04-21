@@ -6,11 +6,12 @@ import {Vector3} from 'three/src/math/Vector3';
 import {Quaternion} from 'three/src/math/Quaternion';
 import {Mesh} from 'three/src/objects/Mesh';
 import {CoreObject} from '@polygonjs/polygonjs/dist/src/core/geometry/Object';
-import {RBDAttribute, RBD_SHAPES, RBDShape} from '../../../core/physics/ammo/RBDBodyHelper';
+import {RBDAttribute, RBD_SHAPES, RBDShape} from '../../../core/physics/ammo/helper/_Base';
 import {TypeAssert} from '@polygonjs/polygonjs/dist/src/engine/poly/Assert';
 import {isBooleanTrue} from '@polygonjs/polygonjs/dist/src/core/BooleanValue';
 import {CorePoint} from '@polygonjs/polygonjs/dist/src/core/geometry/Point';
 import {CoreEntity} from '@polygonjs/polygonjs/dist/src/core/geometry/Entity';
+import {CoreAttribute} from '@polygonjs/polygonjs/dist/src/core/geometry/Attribute';
 
 export enum RBDAttributeMode {
 	OBJECTS = 'objects',
@@ -81,8 +82,12 @@ export class PhysicsRbdAttributesSopOperation extends BaseSopOperation {
 	private _add_object_attributes(core_group: CoreGroup, params: PhysicsRbdAttributesSopParams) {
 		const core_objects = core_group.coreObjects();
 		for (let core_object of core_objects) {
-			this._addEntityAttribute(core_object, core_object.object().uuid, params);
+			this._addEntityAttribute(core_object, params);
 
+			if (isBooleanTrue(params.addId)) {
+				// core_object.setAttribValue(RBDAttribute.ID, `${this.fullPath()}:${i}`);
+				core_object.setAttribValue(RBDAttribute.ID, core_object.object().uuid);
+			}
 			// shape
 			this._add_object_shape_specific_attributes(core_object, params);
 		}
@@ -122,7 +127,7 @@ export class PhysicsRbdAttributesSopOperation extends BaseSopOperation {
 	}
 	private _add_point_attributes(core_group: CoreGroup, params: PhysicsRbdAttributesSopParams) {
 		const points = core_group.points();
-		const firstObjectUuid = core_group.objects()[0].uuid;
+		// const firstObjectUuid = core_group.objects()[0].uuid;
 
 		// make sure to add attributes if they do not exist
 		if (!core_group.hasAttrib(RBDAttribute.ACTIVE)) {
@@ -161,24 +166,38 @@ export class PhysicsRbdAttributesSopOperation extends BaseSopOperation {
 				core_group.addNumericVertexAttrib(RBDAttribute.SIMULATED, 1, params.simulated);
 			}
 		}
-		if (!core_group.hasAttrib(RBDAttribute.ID)) {
-			if (isBooleanTrue(params.addId)) {
-				core_group.addNumericVertexAttrib(RBDAttribute.ID, 1, 0);
+		// if (!core_group.hasAttrib(RBDAttribute.ID)) {
+		// 	if (isBooleanTrue(params.addId)) {
+		// 		core_group.addNumericVertexAttrib(RBDAttribute.ID, 1, 0);
+		// 	}
+		// }
+		if (isBooleanTrue(params.addId)) {
+			const coreObjects = core_group.coreObjects();
+			for (let core_object of coreObjects) {
+				// core_object.setAttribValue(RBDAttribute.ID, core_object.object().uuid);
+				const points = core_object.points();
+				const ids = points.map((point, i) => {
+					return `${core_object.object().uuid}-${i}`;
+				});
+				const index_data = CoreAttribute.arrayToIndexedArrays(ids);
+				const geometry = core_object.coreGeometry();
+				if (geometry) {
+					geometry.setIndexedAttribute(RBDAttribute.ID, index_data['values'], index_data['indices']);
+				}
 			}
+			// core_object.setAttribValue(RBDAttribute.ID, `${this.fullPath()}:${i}`);
 		}
 
 		this._add_core_group_specific_attributes(core_group, params);
 
-		let i = 0;
 		for (let core_point of points) {
 			// core_point.setAttribValue(RBDAttribute.ACTIVE, params.active ? 1 : 0);
-			this._addEntityAttribute(core_point, `${firstObjectUuid}-${i}`, params);
+			this._addEntityAttribute(core_point, params);
 			this._add_point_shape_specific_attributes(core_point, params);
-			i++;
 		}
 	}
 
-	private _addEntityAttribute(entity: CoreEntity, id: string, params: PhysicsRbdAttributesSopParams) {
+	private _addEntityAttribute(entity: CoreEntity, params: PhysicsRbdAttributesSopParams) {
 		entity.setAttribValue(RBDAttribute.ACTIVE, params.active ? 1 : 0);
 		entity.setAttribValue(RBDAttribute.SHAPE, params.shape);
 		if (isBooleanTrue(params.tmass)) {
@@ -198,11 +217,6 @@ export class PhysicsRbdAttributesSopOperation extends BaseSopOperation {
 		}
 		if (isBooleanTrue(params.tsimulated)) {
 			entity.setAttribValue(RBDAttribute.SIMULATED, params.simulated);
-		}
-
-		if (isBooleanTrue(params.addId)) {
-			// core_object.setAttribValue(RBDAttribute.ID, `${this.fullPath()}:${i}`);
-			entity.setAttribValue(RBDAttribute.ID, id);
 		}
 	}
 	private _add_core_group_specific_attributes(coreGroup: CoreGroup, params: PhysicsRbdAttributesSopParams) {
