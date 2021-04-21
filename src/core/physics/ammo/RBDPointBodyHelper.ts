@@ -3,7 +3,6 @@ import {CollisionFlag} from './Constant';
 import {Vector3} from 'three/src/math/Vector3';
 import {Quaternion} from 'three/src/math/Quaternion';
 import {TypeAssert} from '@polygonjs/polygonjs/dist/src/engine/poly/Assert';
-import {Object3D} from 'three/src/core/Object3D';
 import {AttribValue} from '@polygonjs/polygonjs/dist/src/types/GlobalTypes';
 import {CoreType} from '@polygonjs/polygonjs/dist/src/core/Type';
 import {CorePoint} from '@polygonjs/polygonjs/dist/src/core/geometry/Point';
@@ -54,7 +53,7 @@ export class AmmoRBDPointBodyHelper {
 		const active = this.readAttribute<boolean>(corePoint, RBDAttribute.ACTIVE, true);
 		if (!active) {
 			//} || mass == 0) {
-			this.make_kinematic(body);
+			this.makeKinematic(body);
 		}
 
 		// set transform
@@ -63,24 +62,24 @@ export class AmmoRBDPointBodyHelper {
 		return body;
 	}
 
-	make_kinematic(body: Ammo.btRigidBody) {
+	makeKinematic(body: Ammo.btRigidBody) {
 		body.setCollisionFlags(CollisionFlag.KINEMATIC_OBJECT);
 		// body.setActivationState(BodyState.DISABLE_DEACTIVATION);
 	}
-	make_active(body: Ammo.btRigidBody, world: Ammo.btDiscreteDynamicsWorld) {
+	makeActive(body: Ammo.btRigidBody, world: Ammo.btDiscreteDynamicsWorld) {
 		body.setCollisionFlags(0);
 		// body.setActivationState(BodyState.ACTIVE_TAG);
 		// body.activate(true);
 		// body.setMassProps(1, new Ammo.btVector3(0, 0, 0));
 		// body.setGravity(world.getGravity());
 	}
-	is_kinematic(body: Ammo.btRigidBody) {
+	isKinematic(body: Ammo.btRigidBody) {
 		return body.isKinematicObject();
 		// return body.getCollisionFlags() == CollisionFlag.KINEMATIC_OBJECT;
 	}
-	is_active(body: Ammo.btRigidBody) {
+	isActive(body: Ammo.btRigidBody) {
 		// return body.isActive();
-		return !this.is_kinematic(body);
+		return !this.isKinematic(body);
 	}
 
 	private _t = new Vector3();
@@ -98,26 +97,26 @@ export class AmmoRBDPointBodyHelper {
 		rotation.normalize();
 		rbd_transform.setRotation(rotation);
 
-		if (this.is_kinematic(body)) {
+		if (this.isKinematic(body)) {
 			body.getMotionState().setWorldTransform(rbd_transform);
 		}
 	}
 	private _read_t = new Ammo.btTransform();
 	private _read_quat = new Quaternion();
 	// private _read_mat4 = new Matrix4();
-	transform_core_object_from_body(object: Object3D, body: Ammo.btRigidBody) {
-		body.getMotionState().getWorldTransform(this._read_t);
-		const o = this._read_t.getOrigin();
-		const r = this._read_t.getRotation();
-		this._read_quat.set(r.x(), r.y(), r.z(), r.w());
+	// transform_core_object_from_body(object: Object3D, body: Ammo.btRigidBody) {
+	// 	body.getMotionState().getWorldTransform(this._read_t);
+	// 	const o = this._read_t.getOrigin();
+	// 	const r = this._read_t.getRotation();
+	// 	this._read_quat.set(r.x(), r.y(), r.z(), r.w());
 
-		object.position.set(o.x(), o.y(), o.z());
-		object.rotation.setFromQuaternion(this._read_quat);
+	// 	object.position.set(o.x(), o.y(), o.z());
+	// 	object.rotation.setFromQuaternion(this._read_quat);
 
-		if (!object.matrixAutoUpdate) {
-			object.updateMatrix();
-		}
-	}
+	// 	if (!object.matrixAutoUpdate) {
+	// 		object.updateMatrix();
+	// 	}
+	// }
 
 	private _tv = new Vector3();
 	transformPointsFromBodies(bodies: Ammo.btRigidBody[]) {

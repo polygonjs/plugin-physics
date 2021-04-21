@@ -40,6 +40,42 @@ class AmmoSolverSopParamsConfig extends NodeParamsConfig {
 }
 const ParamsConfig = new AmmoSolverSopParamsConfig();
 
+// this queue is needed in case of multiple physics node
+// which would each load Ammo at the same time, and therefore
+// lead to some solvers not working
+type OnPrepareCallback = () => void;
+class AmmoPrepareQueue {
+	private _loading = false;
+	private _loaded = false;
+	private _callbacks: OnPrepareCallback[] = [];
+	onReady(callback: OnPrepareCallback) {
+		if (this._loaded) {
+			return callback();
+		}
+		this._callbacks.push(callback);
+		if (!this._loading) {
+			this._load();
+		}
+	}
+	private _flush() {
+		const callbacksCopy: OnPrepareCallback[] = [];
+		let callback: OnPrepareCallback | undefined;
+		while ((callback = this._callbacks.pop())) {
+			callbacksCopy.push(callback);
+		}
+		for (let callbackCopy of callbacksCopy) {
+			callbackCopy();
+		}
+	}
+	private _load() {
+		this._loading = true;
+		Ammo(Ammo).then(() => {
+			this._loaded = true;
+			this._flush();
+		});
+	}
+}
+const AMMO_PREPARE_QUEUE = new AmmoPrepareQueue();
 export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig> {
 	paramsConfig = ParamsConfig;
 	static type() {
@@ -86,7 +122,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 
 		// physics
 		this.addGraphInput(this.scene().timeController.graphNode);
-		Ammo(Ammo).then(() => {
+		AMMO_PREPARE_QUEUE.onReady(() => {
 			this.prepare();
 		});
 	}
@@ -240,17 +276,17 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		const new_state = active_attr == 1;
 		if (current_state != new_state) {
 			if (new_state == true) {
-				this._body_helper?.make_active(body, this.world!);
+				this._body_helper?.makeActive(body, this.world!);
 			} else {
-				this._body_helper?.make_kinematic(body);
+				this._body_helper?.makeKinematic(body);
 			}
 			this._bodies_active_state_by_id.set(id, new_state);
 		}
 	}
 
 	protected _update_kinematic_transform(body: Ammo.btRigidBody, core_object: CoreObject) {
-		if (this._body_helper && this._body_helper.is_kinematic(body)) {
-			this._body_helper.transform_body_from_core_object(body, core_object);
+		if (this._body_helper && this._body_helper.isKinematic(body)) {
+			this._body_helper.transformBodyFromCoreObject(body, core_object);
 		}
 	}
 
@@ -265,7 +301,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		for (let object of this._objects_with_RBDs) {
 			const bodyForObject = this._bodyByObject.get(object);
 			if (bodyForObject) {
-				this._body_helper.transform_core_object_from_body(object, bodyForObject);
+				this._body_helper.transformCoreObjectFromBody(object, bodyForObject);
 			} else {
 				const bodiesForPoints = this._bodyByPoints.get(object);
 				if (bodiesForPoints) {
@@ -311,21 +347,21 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		body_helper: AmmoRBDBodyHelper,
 		world: Ammo.btDiscreteDynamicsWorld
 	) {
-		const id = body_helper.read_object_attribute(core_object, RBDAttribute.ID, NULL_ID);
+		const id = body_helper.readAttribute(core_object, RBDAttribute.ID, NULL_ID);
 		if (id == NULL_ID) {
 			console.warn('no id for RBD');
 		}
-		const body = body_helper.create_body(core_object);
+		const body = body_helper.createBody(core_object);
 
-		const simulated = body_helper.read_object_attribute(core_object, RBDAttribute.SIMULATED, false);
+		const simulated = body_helper.readAttribute(core_object, RBDAttribute.SIMULATED, false);
 
 		if (simulated) {
 			world.addRigidBody(body);
-			body_helper.finalize_body(body, core_object);
+			body_helper.finalizeBody(body, core_object);
 			this._bodies_by_id.set(id, body);
 			this.bodies.push(body);
 			this._bodyByObject.set(core_object.object(), body);
-			this._bodies_active_state_by_id.set(id, body_helper.is_active(body));
+			this._bodies_active_state_by_id.set(id, body_helper.isActive(body));
 		}
 		const object = core_object.object();
 		this._objects_with_RBDs.push(object);
@@ -352,7 +388,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 				this._bodies_by_id.set(id, body);
 				this.bodies.push(body);
 				MapUtils.pushOnArrayAtEntry(this._bodyByPoints, object, body);
-				this._bodies_active_state_by_id.set(id, point_helper.is_active(body));
+				this._bodies_active_state_by_id.set(id, point_helper.isActive(body));
 			}
 		}
 		this._objects_with_RBDs.push(object);
