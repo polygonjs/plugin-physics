@@ -13,5 +13,5 @@ function PolygonjsPluginPhysics(poly: PolyEngine) {
 	poly.registerNode(PhysicsSolverSopNode, CATEGORY_SOP.PHYSICS);
 }
 export const polyPluginPhysics = new PolyPlugin('physics', PolygonjsPluginPhysics, {
-	libraryName: 'polygonjs-plugin-physics',
+	libraryName: '@polygonjs/plugin-physics/dist',
 });
