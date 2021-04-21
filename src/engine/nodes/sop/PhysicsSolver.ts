@@ -21,6 +21,9 @@ import {PhysicsSolverSopOperation} from '../../operations/sop/PhysicsSolver';
 import {NodeParamsConfig, ParamConfig} from '@polygonjs/polygonjs/dist/src/engine/nodes/utils/params/ParamsConfig';
 import {Object3D} from 'three/src/core/Object3D';
 import {CoreType} from '@polygonjs/polygonjs/dist/src/core/Type';
+import {RBDAttributeMode, RBD_ATTRIBUTE_MODES} from '../../operations/sop/PhysicsRbdAttributes';
+import {AmmoRBDPointBodyHelper} from '../../../core/physics/ammo/RBDPointBodyHelper';
+import {MapUtils} from '@polygonjs/polygonjs/dist/src/core/MapUtils';
 const DEFAULT = PhysicsSolverSopOperation.DEFAULT_PARAMS;
 class AmmoSolverSopParamsConfig extends NodeParamsConfig {
 	startFrame = ParamConfig.INTEGER(DEFAULT.startFrame);
@@ -48,6 +51,8 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	private solver: Ammo.btSequentialImpulseConstraintSolver | undefined;
 	private world: Ammo.btDiscreteDynamicsWorld | undefined;
 	private bodies: Ammo.btRigidBody[] = [];
+	private _bodyByObject: Map<Object3D, Ammo.btRigidBody> = new Map();
+	private _bodyByPoints: Map<Object3D, Ammo.btRigidBody[]> = new Map();
 	// private boxShape: Ammo.btBoxShape | undefined;
 	// private sphereShape: Ammo.btSphereShape | undefined;
 	// private transform: Ammo.btTransform | undefined;
@@ -56,6 +61,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	private _bodies_active_state_by_id: Map<string, boolean> = new Map();
 	// helpers
 	private _body_helper: AmmoRBDBodyHelper | undefined;
+	private _point_helper: AmmoRBDPointBodyHelper | undefined;
 	private _force_helper: AmmoForceHelper | undefined;
 	// inputs
 	private _input_init: CoreObject[] | undefined;
@@ -86,6 +92,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	}
 	prepare() {
 		this._body_helper = new AmmoRBDBodyHelper();
+		this._point_helper = new AmmoRBDPointBodyHelper();
 		this._force_helper = new AmmoForceHelper();
 		this.config = new Ammo.btDefaultCollisionConfiguration();
 		this.dispatcher = new Ammo.btCollisionDispatcher(this.config);
@@ -113,7 +120,6 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		// if (this.pv.emit_every_frame && this.scene.frame != this.pv.start_frame) {
 		// 	this.check_for_new_RBDs(input_contents[0]);
 		// }
-
 		this._input_force_points = await this._fetch_input_points(1);
 		this._input_attributes_update = await this._fetch_input_objects(2);
 		this.simulate(0.05);
@@ -169,7 +175,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	// 	// this.bodies.push(body);
 	// }
 	private init() {
-		if (!(this.world && this._gravity && this._input_init && this._body_helper)) {
+		if (!(this.world && this._gravity && this._input_init && this._body_helper && this._point_helper)) {
 			return;
 		}
 		this._gravity.setValue(this.pv.gravity.x, this.pv.gravity.y, this.pv.gravity.z);
@@ -177,7 +183,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 
 		for (let i = 0; i < this._input_init.length; i++) {
 			const core_object = this._input_init[i];
-			this._add_rbd_from_object(core_object, this._body_helper, this.world);
+			this._add_rbd_from_object(core_object, this._body_helper, this._point_helper, this.world);
 		}
 		this._transform_core_objects_from_bodies();
 		// this._create_constraints();
@@ -249,11 +255,23 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	}
 
 	private _transform_core_objects_from_bodies() {
-		if (!this._body_helper) {
+		if (!(this._body_helper && this._point_helper)) {
 			return;
 		}
-		for (let i = 0; i < this._objects_with_RBDs.length; i++) {
-			this._body_helper.transform_core_object_from_body(this._objects_with_RBDs[i], this.bodies[i]);
+		// for (let i = 0; i < this._objects_with_RBDs.length; i++) {
+		// 	const body = this._bodyByObject.get()
+		// 	this._body_helper.transform_core_object_from_body(this._objects_with_RBDs[i], this.bodies[i]);
+		// }
+		for (let object of this._objects_with_RBDs) {
+			const bodyForObject = this._bodyByObject.get(object);
+			if (bodyForObject) {
+				this._body_helper.transform_core_object_from_body(object, bodyForObject);
+			} else {
+				const bodiesForPoints = this._bodyByPoints.get(object);
+				if (bodiesForPoints) {
+					this._point_helper.transformPointsFromBodies(bodiesForPoints);
+				}
+			}
 		}
 	}
 	// private check_for_new_RBDs(core_group: CoreGroup) {
@@ -274,6 +292,23 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	private _add_rbd_from_object(
 		core_object: CoreObject,
 		body_helper: AmmoRBDBodyHelper,
+		point_helper: AmmoRBDPointBodyHelper,
+		world: Ammo.btDiscreteDynamicsWorld
+	) {
+		const mode = core_object.attribValue(RBDAttribute.ATTRIBUTE_MODE) as number;
+		const attributeMode = RBD_ATTRIBUTE_MODES[mode];
+		switch (attributeMode) {
+			case RBDAttributeMode.OBJECTS: {
+				return this._addRbdFromObjectLevelAttributes(core_object, body_helper, world);
+			}
+			case RBDAttributeMode.POINTS: {
+				return this._addRbdFromPointLevelAttributes(core_object, point_helper, world);
+			}
+		}
+	}
+	private _addRbdFromObjectLevelAttributes(
+		core_object: CoreObject,
+		body_helper: AmmoRBDBodyHelper,
 		world: Ammo.btDiscreteDynamicsWorld
 	) {
 		const id = body_helper.read_object_attribute(core_object, RBDAttribute.ID, NULL_ID);
@@ -289,11 +324,39 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 			body_helper.finalize_body(body, core_object);
 			this._bodies_by_id.set(id, body);
 			this.bodies.push(body);
+			this._bodyByObject.set(core_object.object(), body);
 			this._bodies_active_state_by_id.set(id, body_helper.is_active(body));
 		}
 		const object = core_object.object();
 		this._objects_with_RBDs.push(object);
 		object.visible = simulated;
+	}
+	private _addRbdFromPointLevelAttributes(
+		core_object: CoreObject,
+		point_helper: AmmoRBDPointBodyHelper,
+		world: Ammo.btDiscreteDynamicsWorld
+	) {
+		const object = core_object.object();
+		const points = core_object.points();
+		for (let corePoint of points) {
+			const id = point_helper.readAttribute(corePoint, RBDAttribute.ID, NULL_ID);
+			if (id == NULL_ID) {
+				console.warn('no id for RBD');
+			}
+			const body = point_helper.createBody(corePoint);
+			const simulated = point_helper.readAttribute(corePoint, RBDAttribute.SIMULATED, false);
+
+			if (simulated) {
+				world.addRigidBody(body);
+				point_helper.finalizeBody(body, corePoint);
+				this._bodies_by_id.set(id, body);
+				this.bodies.push(body);
+				MapUtils.pushOnArrayAtEntry(this._bodyByPoints, object, body);
+				this._bodies_active_state_by_id.set(id, point_helper.is_active(body));
+			}
+		}
+		this._objects_with_RBDs.push(object);
+		// object.visible = simulated; // TODO: not yet sure what to do with that
 	}
 
 	//
@@ -315,6 +378,8 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		this._bodies_by_id.clear();
 		this._bodies_active_state_by_id.clear();
 		this.bodies = [];
+		this._bodyByObject.clear();
+		this._bodyByPoints.clear();
 		this._objects_with_RBDs = [];
 		this._input_init = undefined;
 		this.scene().setFrame(this.pv.startFrame);

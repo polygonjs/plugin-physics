@@ -1,74 +1,44 @@
 import Ammo from 'ammojs-typed';
 import {CollisionFlag} from './Constant';
-import {CoreObject} from '@polygonjs/polygonjs/dist/src/core/geometry/Object';
 import {Vector3} from 'three/src/math/Vector3';
 import {Quaternion} from 'three/src/math/Quaternion';
-import {Matrix4} from 'three/src/math/Matrix4';
 import {TypeAssert} from '@polygonjs/polygonjs/dist/src/engine/poly/Assert';
 import {Object3D} from 'three/src/core/Object3D';
 import {AttribValue} from '@polygonjs/polygonjs/dist/src/types/GlobalTypes';
 import {CoreType} from '@polygonjs/polygonjs/dist/src/core/Type';
+import {CorePoint} from '@polygonjs/polygonjs/dist/src/core/geometry/Point';
+import {RBDAttribute, RBDShape, RBD_SHAPES} from './RBDBodyHelper';
+import {CoreGeometry} from '@polygonjs/polygonjs/dist/src/core/geometry/Geometry';
+import {InstanceAttrib} from '@polygonjs/polygonjs/dist/src/core/geometry/Instancer';
 
-export enum RBDAttribute {
-	ATTRIBUTE_MODE = 'physicsAttributesMode',
-	ACTIVE = 'active',
-	ANGULAR_DAMPING = 'angularDamping',
-	DAMPING = 'damping',
-	FRICTION = 'friction',
-	ID = 'id',
-	MASS = 'mass',
-	RESTITUTION = 'restitution',
-	SIMULATED = 'simulated',
-	SHAPE = 'shape',
-	SHAPE_SIZE_SPHERE = 'shapeSizeSphere',
-	SHAPE_SIZE_BOX = 'shapeSizeBox',
-}
-export enum RBDShape {
-	BOX = 'box',
-	// CAPSULE = 'capsule',
-	// CONE = 'cone',
-	// CYLINDER = 'cylinder',
-	SPHERE = 'sphere',
-}
-export const RBD_SHAPES: Array<RBDShape> = [
-	RBDShape.BOX,
-	// RBDShape.CAPSULE,
-	// RBDShape.CONE,
-	// RBDShape.CYLINDER,
-	RBDShape.SPHERE,
-];
-// also investigate btMultiSphereShape, btConvexHullShape, btCompoundShape, btConcaveShape, btConvexShape,
-
-export class AmmoRBDBodyHelper {
+export class AmmoRBDPointBodyHelper {
 	private _default_shape_size_box: Vector3 = new Vector3(1, 1, 1);
-	create_body(core_object: CoreObject) {
+	private _corePointByBody: WeakMap<Ammo.btRigidBody, CorePoint> = new WeakMap();
+	createBody(corePoint: CorePoint) {
 		// read attributes
 
-		let mass = this.read_object_attribute<number>(core_object, RBDAttribute.MASS, 1);
+		let mass = this.readAttribute<number>(corePoint, RBDAttribute.MASS, 1);
 		// if (!active) {
 		// 	mass = 0;
 		// }
-		const shape_index = this.read_object_attribute<number>(
-			core_object,
-			RBDAttribute.SHAPE,
-			RBD_SHAPES.indexOf(RBDShape.BOX)
-		);
-		const restitution = this.read_object_attribute<number>(core_object, RBDAttribute.RESTITUTION, 1);
-		const damping = this.read_object_attribute<number>(core_object, RBDAttribute.DAMPING, 1);
-		const angular_damping = this.read_object_attribute<number>(core_object, RBDAttribute.ANGULAR_DAMPING, 1);
-		const friction = this.read_object_attribute<number>(core_object, RBDAttribute.FRICTION, 0.5);
+		const shape_index = this.readAttribute<number>(corePoint, RBDAttribute.SHAPE, RBD_SHAPES.indexOf(RBDShape.BOX));
+		const restitution = this.readAttribute<number>(corePoint, RBDAttribute.RESTITUTION, 1);
+		const damping = this.readAttribute<number>(corePoint, RBDAttribute.DAMPING, 1);
+		const angular_damping = this.readAttribute<number>(corePoint, RBDAttribute.ANGULAR_DAMPING, 1);
+		const friction = this.readAttribute<number>(corePoint, RBDAttribute.FRICTION, 0.5);
 
 		// create body
 		const startTransform = new Ammo.btTransform();
 		startTransform.setIdentity();
 		const localInertia = new Ammo.btVector3(0, 0, 0);
 
-		const shape = this._find_or_create_shape(RBD_SHAPES[shape_index], core_object);
+		const shape = this._findOrCreateShape(RBD_SHAPES[shape_index], corePoint);
 
 		shape.calculateLocalInertia(mass, localInertia);
 		const motion_state = new Ammo.btDefaultMotionState(startTransform);
 		const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motion_state, shape, localInertia);
 		const body = new Ammo.btRigidBody(rbInfo);
+		this._corePointByBody.set(body, corePoint);
 
 		// apply attributes
 		body.setRestitution(restitution);
@@ -80,15 +50,15 @@ export class AmmoRBDBodyHelper {
 	// Otherwise, when it switches state, such as starting kinematic and then becoming dynamic,
 	// It will not be assigned to the correct collition group, and therefore will not collide with
 	// static bodies
-	finalize_body(body: Ammo.btRigidBody, core_object: CoreObject) {
-		const active = this.read_object_attribute<boolean>(core_object, RBDAttribute.ACTIVE, true);
+	finalizeBody(body: Ammo.btRigidBody, corePoint: CorePoint) {
+		const active = this.readAttribute<boolean>(corePoint, RBDAttribute.ACTIVE, true);
 		if (!active) {
 			//} || mass == 0) {
 			this.make_kinematic(body);
 		}
 
 		// set transform
-		this.transform_body_from_core_object(body, core_object);
+		this.transformBodyFromPoint(body, corePoint);
 
 		return body;
 	}
@@ -115,16 +85,16 @@ export class AmmoRBDBodyHelper {
 
 	private _t = new Vector3();
 	private _q = new Quaternion();
-	private _s = new Vector3();
-	transform_body_from_core_object(body: Ammo.btRigidBody, core_object: CoreObject) {
-		const matrix = core_object.object().matrix;
-		matrix.decompose(this._t, this._q, this._s);
+	// private _s = new Vector3();
+	transformBodyFromPoint(body: Ammo.btRigidBody, corePoint: CorePoint) {
+		const position = this.readAttribute(corePoint, InstanceAttrib.POSITION, this._t);
+		const orientation = this.readAttribute(corePoint, InstanceAttrib.ORIENTATION, this._q);
 
 		const rbd_transform = body.getWorldTransform();
 		const origin = rbd_transform.getOrigin();
 		const rotation = rbd_transform.getRotation();
-		origin.setValue(this._t.x, this._t.y, this._t.z);
-		rotation.setValue(this._q.x, this._q.y, this._q.z, this._q.w);
+		origin.setValue(position.x, position.y, position.z);
+		rotation.setValue(orientation.x, orientation.y, orientation.z, orientation.w);
 		rotation.normalize();
 		rbd_transform.setRotation(rotation);
 
@@ -134,14 +104,13 @@ export class AmmoRBDBodyHelper {
 	}
 	private _read_t = new Ammo.btTransform();
 	private _read_quat = new Quaternion();
-	private _read_mat4 = new Matrix4();
+	// private _read_mat4 = new Matrix4();
 	transform_core_object_from_body(object: Object3D, body: Ammo.btRigidBody) {
 		body.getMotionState().getWorldTransform(this._read_t);
 		const o = this._read_t.getOrigin();
 		const r = this._read_t.getRotation();
 		this._read_quat.set(r.x(), r.y(), r.z(), r.w());
 
-		this._read_mat4.identity();
 		object.position.set(o.x(), o.y(), o.z());
 		object.rotation.setFromQuaternion(this._read_quat);
 
@@ -150,11 +119,34 @@ export class AmmoRBDBodyHelper {
 		}
 	}
 
-	private _find_or_create_shape(shape: RBDShape, core_object: CoreObject): Ammo.btCollisionShape {
+	private _tv = new Vector3();
+	transformPointsFromBodies(bodies: Ammo.btRigidBody[]) {
+		let coreGeo: CoreGeometry | undefined;
+		for (let body of bodies) {
+			const corePoint = this._corePointByBody.get(body);
+			if (corePoint) {
+				coreGeo = coreGeo || corePoint.core_geometry();
+				body.getMotionState().getWorldTransform(this._read_t);
+				const o = this._read_t.getOrigin();
+				const r = this._read_t.getRotation();
+				this._read_quat.set(r.x(), r.y(), r.z(), r.w());
+
+				this._tv.set(o.x(), o.y(), o.z());
+				corePoint.setAttribValue(InstanceAttrib.POSITION, this._tv);
+				corePoint.setAttribValue(InstanceAttrib.ORIENTATION, this._read_quat);
+			}
+		}
+		if (coreGeo) {
+			coreGeo.geometry().attributes[InstanceAttrib.POSITION].needsUpdate = true;
+			coreGeo.geometry().attributes[InstanceAttrib.ORIENTATION].needsUpdate = true;
+		}
+	}
+
+	private _findOrCreateShape(shape: RBDShape, corePoint: CorePoint): Ammo.btCollisionShape {
 		switch (shape) {
 			case RBDShape.BOX: {
-				const shape_size = this.read_object_attribute(
-					core_object,
+				const shape_size = this.readAttribute(
+					corePoint,
 					RBDAttribute.SHAPE_SIZE_BOX,
 					this._default_shape_size_box
 				);
@@ -172,7 +164,7 @@ export class AmmoRBDBodyHelper {
 				return new Ammo.btBoxShape(size_v);
 			}
 			case RBDShape.SPHERE: {
-				const shape_size = this.read_object_attribute(core_object, RBDAttribute.SHAPE_SIZE_SPHERE, 0.5);
+				const shape_size = this.readAttribute(corePoint, RBDAttribute.SHAPE_SIZE_SPHERE, 0.5);
 				if (!CoreType.isNumber(shape_size)) {
 					console.warn('shape_size attribute expected to be a number', shape_size);
 				}
@@ -182,8 +174,8 @@ export class AmmoRBDBodyHelper {
 		TypeAssert.unreachable(shape);
 	}
 
-	read_object_attribute<A extends AttribValue>(core_object: CoreObject, attrib_name: string, default_value: A): A {
-		const val = core_object.attribValue(attrib_name) as A;
+	readAttribute<A extends AttribValue>(corePoint: CorePoint, attrib_name: string, default_value: A): A {
+		const val = corePoint.attribValue(attrib_name) as A;
 		if (val == null) {
 			return default_value;
 		} else {
