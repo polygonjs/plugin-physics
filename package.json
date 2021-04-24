@@ -41,7 +41,7 @@
 	},
 	"dependencies": {
 		"ammojs-typed": "1.0.2",
-		"@polygonjs/polygonjs": "^1.1.145"
+		"@polygonjs/polygonjs": "^1.1.148"
 	},
 	"devDependencies": {
 		"@types/lodash": "4.14.166",
