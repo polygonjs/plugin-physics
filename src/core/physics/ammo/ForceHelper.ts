@@ -1,4 +1,4 @@
-import Ammo from 'ammojs-typed';
+import {Ammo} from './helper/AmmoImport';
 import {CorePoint} from '@polygonjs/polygonjs/dist/src/core/geometry/Point';
 import {TypeAssert} from '@polygonjs/polygonjs/dist/src/engine/poly/Assert';
 import {CoreType} from '@polygonjs/polygonjs/dist/src/core/Type';

@@ -1,4 +1,4 @@
-import Ammo from 'ammojs-typed';
+import {Ammo} from './AmmoImport';
 import {Vector3} from 'three/src/math/Vector3';
 import {Quaternion} from 'three/src/math/Quaternion';
 import {TypeAssert} from '@polygonjs/polygonjs/dist/src/engine/poly/Assert';

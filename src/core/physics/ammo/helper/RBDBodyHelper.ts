@@ -1,4 +1,4 @@
-import Ammo from 'ammojs-typed';
+import {Ammo} from './AmmoImport';
 import {CoreObject} from '@polygonjs/polygonjs/dist/src/core/geometry/Object';
 import {Vector3} from 'three/src/math/Vector3';
 import {Quaternion} from 'three/src/math/Quaternion';

@@ -469,10 +469,10 @@ ajv@^8.0.1:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-ammojs-typed@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/ammojs-typed/-/ammojs-typed-1.0.2.tgz#9d9aec9148fba1860326b51be1c7c3c5f3166d09"
-  integrity sha512-r+bAY2Of6VM1+MCNVsxXzJ0UxlDaKS9TRiUhWKeErzVJduof2BmmQd+fnjKTXw83agRzvZ0viKAos7iDarEuAA==
+ammojs-typed@1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/ammojs-typed/-/ammojs-typed-1.0.6.tgz#07f951a55885959d0836655587e58dc9218d591e"
+  integrity sha512-ut/tD0m5eEdlJ5KK97ma6SIEGZ4FN3AJTSVz8wl6C4EtnpVQdP70lOwgDMJKsHjTohxc2/xEZl6yJfMBZNlQ5w==
 
 ansi-colors@^3.0.0:
   version "3.2.4"

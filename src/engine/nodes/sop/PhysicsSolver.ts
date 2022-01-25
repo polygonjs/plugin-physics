@@ -22,7 +22,7 @@ import {RBDAttributeMode, RBD_ATTRIBUTE_MODES} from '../../operations/sop/Physic
 import {AmmoRBDPointBodyHelper} from '../../../core/physics/ammo/helper/RBDPointBodyHelper';
 import {MapUtils} from '@polygonjs/polygonjs/dist/src/core/MapUtils';
 import {CoreEntity} from '@polygonjs/polygonjs/dist/src/core/geometry/Entity';
-import Ammo from 'ammojs-typed';
+import {Ammo} from '../../../core/physics/ammo/helper/AmmoImport';
 const NULL_ID = '';
 const DEFAULT = PhysicsSolverSopOperation.DEFAULT_PARAMS;
 class AmmoSolverSopParamsConfig extends NodeParamsConfig {

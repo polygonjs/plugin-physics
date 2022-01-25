@@ -1,6 +1,6 @@
 import {CoreEntity} from '@polygonjs/polygonjs/dist/src/core/geometry/Entity';
 import {AttribValue} from '@polygonjs/polygonjs/dist/src/types/GlobalTypes';
-import Ammo from 'ammojs-typed';
+import {Ammo} from './AmmoImport';
 import {CollisionFlag} from '../Constant';
 
 export enum RBDAttribute {
