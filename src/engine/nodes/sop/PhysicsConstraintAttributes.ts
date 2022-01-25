@@ -55,17 +55,17 @@ class PhysicsConstraintAttributesSopParamsConfig extends NodeParamsConfig {
 const ParamsConfig = new PhysicsConstraintAttributesSopParamsConfig();
 
 export class PhysicsConstraintAttributesSopNode extends TypedSopNode<PhysicsConstraintAttributesSopParamsConfig> {
-	paramsConfig = ParamsConfig;
-	static type() {
+	override paramsConfig = ParamsConfig;
+	static override type() {
 		return 'physicsConstraintAttributes';
 	}
 
-	initializeNode() {
+	override initializeNode() {
 		this.io.inputs.setCount(1);
 		this.io.inputs.initInputsClonedState(InputCloneMode.FROM_NODE);
 	}
 
-	cook(input_contents: CoreGroup[]) {
+	override cook(input_contents: CoreGroup[]) {
 		if (RBD_ATTRIBUTE_MODES[this.pv.mode] == RBDAttributeMode.OBJECTS) {
 			this._add_object_attributes(input_contents[0]);
 		} else {

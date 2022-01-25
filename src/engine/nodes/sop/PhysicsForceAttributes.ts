@@ -54,17 +54,17 @@ class PhysicsForceAttributesSopParamsConfig extends NodeParamsConfig {
 const ParamsConfig = new PhysicsForceAttributesSopParamsConfig();
 
 export class PhysicsForceAttributesSopNode extends TypedSopNode<PhysicsForceAttributesSopParamsConfig> {
-	paramsConfig = ParamsConfig;
-	static type() {
+	override paramsConfig = ParamsConfig;
+	static override type() {
 		return 'physicsForceAttributes';
 	}
 
-	initializeNode() {
+	override initializeNode() {
 		this.io.inputs.setCount(1);
 		this.io.inputs.initInputsClonedState(InputCloneMode.FROM_NODE);
 	}
 
-	cook(input_contents: CoreGroup[]) {
+	override cook(input_contents: CoreGroup[]) {
 		const core_group = input_contents[0];
 		const force_type = FORCE_TYPES[this.pv.type];
 		this._create_attributes_if_required(core_group, force_type);

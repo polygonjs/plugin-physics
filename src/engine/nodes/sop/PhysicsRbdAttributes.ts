@@ -63,12 +63,12 @@ class PhysicsRBDAttributesSopParamsConfig extends NodeParamsConfig {
 const ParamsConfig = new PhysicsRBDAttributesSopParamsConfig();
 
 export class PhysicsRbdAttributesSopNode extends TypedSopNode<PhysicsRBDAttributesSopParamsConfig> {
-	paramsConfig = ParamsConfig;
-	static type() {
+	override paramsConfig = ParamsConfig;
+	static override type() {
 		return 'physicsRbdAttributes';
 	}
 
-	initializeNode() {
+	override initializeNode() {
 		this.io.inputs.setCount(1);
 		this.io.inputs.initInputsClonedState(InputCloneMode.FROM_NODE);
 	}
@@ -78,7 +78,7 @@ export class PhysicsRbdAttributesSopNode extends TypedSopNode<PhysicsRBDAttribut
 	}
 
 	private _operation: PhysicsRbdAttributesSopOperation | undefined;
-	cook(input_contents: CoreGroup[]) {
+	override cook(input_contents: CoreGroup[]) {
 		this._operation = this._operation || new PhysicsRbdAttributesSopOperation(this._scene, this.states);
 		const core_group = this._operation.cook(input_contents, this.pv);
 		this.setCoreGroup(core_group);

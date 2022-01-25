@@ -1,5 +1,5 @@
 import {BaseSopOperation} from '@polygonjs/polygonjs/dist/src/engine/operations/sop/_Base';
-import {DefaultOperationParams} from '@polygonjs/polygonjs/dist/src/engine/operations/_Base';
+import {DefaultOperationParams} from '@polygonjs/polygonjs/dist/src/core/operations/_Base';
 import {CoreGroup} from '@polygonjs/polygonjs/dist/src/core/geometry/Group';
 import {InputCloneMode} from '@polygonjs/polygonjs/dist/src/engine/poly/InputCloneMode';
 import {Vector3} from 'three/src/math/Vector3';
@@ -18,16 +18,16 @@ interface PhysicsSolverSopParams extends DefaultOperationParams {
 }
 
 export class PhysicsSolverSopOperation extends BaseSopOperation {
-	static readonly DEFAULT_PARAMS: PhysicsSolverSopParams = {
+	static override readonly DEFAULT_PARAMS: PhysicsSolverSopParams = {
 		startFrame: TimeController.START_FRAME,
 		gravity: new Vector3(0, -9.81, 0),
 		maxSubsteps: 2,
 	};
-	static readonly INPUT_CLONED_STATE = [InputCloneMode.ALWAYS, InputCloneMode.NEVER, InputCloneMode.NEVER];
-	static type(): Readonly<'physicsSolver'> {
+	static override readonly INPUT_CLONED_STATE = [InputCloneMode.ALWAYS, InputCloneMode.NEVER, InputCloneMode.NEVER];
+	static override type(): Readonly<'physicsSolver'> {
 		return 'physicsSolver';
 	}
-	cook(input_contents: CoreGroup[], params: PhysicsSolverSopParams) {
+	override cook(input_contents: CoreGroup[], params: PhysicsSolverSopParams) {
 		// TODO: Operations would require more work for the PhysicsSolver to have one:
 		// - init Ammo
 		// - update every frame

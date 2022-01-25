@@ -1,5 +1,5 @@
 import {BaseSopOperation} from '@polygonjs/polygonjs/dist/src/engine/operations/sop/_Base';
-import {DefaultOperationParams} from '@polygonjs/polygonjs/dist/src/engine/operations/_Base';
+import {DefaultOperationParams} from '@polygonjs/polygonjs/dist/src/core/operations/_Base';
 import {CoreGroup} from '@polygonjs/polygonjs/dist/src/core/geometry/Group';
 import {InputCloneMode} from '@polygonjs/polygonjs/dist/src/engine/poly/InputCloneMode';
 import {Vector3} from 'three/src/math/Vector3';
@@ -42,7 +42,7 @@ interface PhysicsRbdAttributesSopParams extends DefaultOperationParams {
 }
 
 export class PhysicsRbdAttributesSopOperation extends BaseSopOperation {
-	static readonly DEFAULT_PARAMS: PhysicsRbdAttributesSopParams = {
+	static override readonly DEFAULT_PARAMS: PhysicsRbdAttributesSopParams = {
 		mode: RBD_ATTRIBUTE_MODES.indexOf(RBDAttributeMode.OBJECTS),
 		active: true,
 		shape: RBD_SHAPES.indexOf(RBDShape.BOX),
@@ -62,11 +62,11 @@ export class PhysicsRbdAttributesSopOperation extends BaseSopOperation {
 		sizeBox: new Vector3(1, 1, 1),
 		sizeSphereDiameter: 1,
 	};
-	static readonly INPUT_CLONED_STATE = InputCloneMode.FROM_NODE;
-	static type(): Readonly<'physicsRbdAttributes'> {
+	static override readonly INPUT_CLONED_STATE = InputCloneMode.FROM_NODE;
+	static override type(): Readonly<'physicsRbdAttributes'> {
 		return 'physicsRbdAttributes';
 	}
-	cook(input_contents: CoreGroup[], params: PhysicsRbdAttributesSopParams) {
+	override cook(input_contents: CoreGroup[], params: PhysicsRbdAttributesSopParams) {
 		const core_objects = input_contents[0].coreObjects();
 		for (let core_object of core_objects) {
 			core_object.addAttribute(RBDAttribute.ATTRIBUTE_MODE, params.mode);

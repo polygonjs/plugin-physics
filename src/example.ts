@@ -17,7 +17,7 @@ const scene = new PolyScene();
 // create a box
 const geo = scene.root().createNode('geo') as ExtendedGeoObjNode;
 const box = geo.createNode('roundedBox');
-box.p.size.set(0.63);
+box.p.size.set([0.63, 0.63, 0.63]);
 
 // create points to instantiate boxes onto
 const plane = geo.createNode('plane');

@@ -77,8 +77,8 @@ class AmmoPrepareQueue {
 }
 const AMMO_PREPARE_QUEUE = new AmmoPrepareQueue();
 export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig> {
-	paramsConfig = ParamsConfig;
-	static type() {
+	override paramsConfig = ParamsConfig;
+	static override type() {
 		return 'physicsSolver';
 	}
 	private config: Ammo.btDefaultCollisionConfiguration | undefined;
@@ -106,11 +106,11 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	private _input_attributes_update: CoreObject[] | undefined;
 	private _objects_with_RBDs: Object3D[] = [];
 
-	static displayedInputNames(): string[] {
+	static override displayedInputNames(): string[] {
 		return ['RBDs', 'Forces', 'Updated RBD Attributes'];
 	}
 
-	initializeNode() {
+	override initializeNode() {
 		this.io.inputs.setCount(1, 3);
 
 		// this has to clone for now, to allow for reposition the input core_objects
@@ -119,7 +119,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		// But we also set the cook controller to disallow_inputs_evaluation
 		// to ensure it is not cloned on every frame
 		this.io.inputs.initInputsClonedState(PhysicsSolverSopOperation.INPUT_CLONED_STATE);
-		this.cookController.disallow_inputs_evaluation();
+		this.cookController.disallowInputsEvaluation();
 
 		// physics
 		this.addGraphInput(this.scene().timeController.graphNode);
@@ -145,7 +145,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 		this._gravity = new Ammo.btVector3(0, 0, 0);
 	}
 
-	async cook(input_contents: CoreGroup[]) {
+	override async cook(input_contents: CoreGroup[]) {
 		if (this.scene().frame() == this.pv.startFrame) {
 			this.reset();
 		}

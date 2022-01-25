@@ -87,7 +87,7 @@ export class AmmoRBDPointBodyHelper extends RBDBaseHelper<CorePoint> {
 		for (let body of bodies) {
 			const corePoint = this._corePointByBody.get(body);
 			if (corePoint) {
-				coreGeo = coreGeo || corePoint.core_geometry();
+				coreGeo = coreGeo || corePoint.coreGeometry();
 				body.getMotionState().getWorldTransform(this._read_t);
 				const o = this._read_t.getOrigin();
 				const r = this._read_t.getRotation();
