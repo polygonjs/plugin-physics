@@ -127,9 +127,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 			this.prepare();
 		});
 	}
-	onPhysicsReady(callback: OnPrepareCallback) {
-		AMMO_PREPARE_QUEUE.onReady(callback);
-	}
+
 	prepare() {
 		this._body_helper = new AmmoRBDBodyHelper();
 		this._point_helper = new AmmoRBDPointBodyHelper();
@@ -149,7 +147,15 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	}
 
 	override async cook(input_contents: CoreGroup[]) {
-		if (this.scene().frame() == this.pv.startFrame || this.world == null) {
+		// either the physics solver node loads faster,
+		// due to the recent dependency graph fix in polygonjs,
+		// or ammo loads more slowly,
+		// but we now have to check if ammo is ready when cooking here
+		AMMO_PREPARE_QUEUE.onReady(this._runSimulationBound);
+	}
+	private _runSimulationBound = this._runSimulation.bind(this);
+	private async _runSimulation() {
+		if (this.scene().frame() == this.pv.startFrame) {
 			this.reset();
 		}
 		if (!this._input_init) {

@@ -74,6 +74,7 @@ merge.flags.display.set(true);
 // create solver
 const physicsSolver = geo.createNode('physicsSolver');
 physicsSolver.setInput(0, merge);
+physicsSolver.flags.display.set(true);
 
 // add a light
 scene.root().createNode('hemisphereLight');
@@ -88,12 +89,7 @@ perspectiveCamera1.p.controls.setNode(orbitsControls);
 
 perspectiveCamera1.createViewer(document.getElementById('app')!);
 
-physicsSolver.onPhysicsReady(() => {
-	// we only display the solver once ammo is ready
-	physicsSolver.flags.display.set(true);
-	// start play
-	scene.play();
-});
+scene.play();
 
 // make some nodes globals to access in html controls
 (window as any).scene = scene;
