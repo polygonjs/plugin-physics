@@ -6,6 +6,9 @@
 // So instead, I've copied all the content of ammojs-typed into src/core/physics/ammo
 // and also removed "this.Ammo=b;" at the end of the file.
 
-import Ammo from '../../ammo/ammo';
+// update: I've had to update the import path from '../../ammo/ammo' to '../ammo/ammo/ammo'
+// which seems correctly. Not sure why it was working previously
+
+import Ammo from '../ammo/ammo/ammo';
 // import Ammo from 'ammojs-typed';
-export {Ammo}
+export {Ammo};

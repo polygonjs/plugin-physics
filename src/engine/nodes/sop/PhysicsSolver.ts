@@ -127,6 +127,9 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 			this.prepare();
 		});
 	}
+	onPhysicsReady(callback: OnPrepareCallback) {
+		AMMO_PREPARE_QUEUE.onReady(callback);
+	}
 	prepare() {
 		this._body_helper = new AmmoRBDBodyHelper();
 		this._point_helper = new AmmoRBDPointBodyHelper();
@@ -146,7 +149,7 @@ export class PhysicsSolverSopNode extends TypedSopNode<AmmoSolverSopParamsConfig
 	}
 
 	override async cook(input_contents: CoreGroup[]) {
-		if (this.scene().frame() == this.pv.startFrame) {
+		if (this.scene().frame() == this.pv.startFrame || this.world == null) {
 			this.reset();
 		}
 		if (!this._input_init) {
