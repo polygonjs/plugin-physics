@@ -1,10 +1,10 @@
 import {Ammo} from './AmmoImport';
 import {CoreObject} from '@polygonjs/polygonjs/dist/src/core/geometry/Object';
-import {Vector3} from 'three/src/math/Vector3';
-import {Quaternion} from 'three/src/math/Quaternion';
-import {Matrix4} from 'three/src/math/Matrix4';
+import {Vector3} from 'three';
+import {Quaternion} from 'three';
+import {Matrix4} from 'three';
 import {TypeAssert} from '@polygonjs/polygonjs/dist/src/engine/poly/Assert';
-import {Object3D} from 'three/src/core/Object3D';
+import {Object3D} from 'three';
 import {CoreType} from '@polygonjs/polygonjs/dist/src/core/Type';
 import {RBDBaseHelper} from './_Base';
 import {RBDAttribute, RBDShape, RBD_SHAPES} from './_Base';

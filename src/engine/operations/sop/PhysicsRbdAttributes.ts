@@ -2,9 +2,9 @@ import {BaseSopOperation} from '@polygonjs/polygonjs/dist/src/engine/operations/
 import {DefaultOperationParams} from '@polygonjs/polygonjs/dist/src/core/operations/_Base';
 import {CoreGroup} from '@polygonjs/polygonjs/dist/src/core/geometry/Group';
 import {InputCloneMode} from '@polygonjs/polygonjs/dist/src/engine/poly/InputCloneMode';
-import {Vector3} from 'three/src/math/Vector3';
-import {Quaternion} from 'three/src/math/Quaternion';
-import {Mesh} from 'three/src/objects/Mesh';
+import {Vector3} from 'three';
+import {Quaternion} from 'three';
+import {Mesh} from 'three';
 import {CoreObject} from '@polygonjs/polygonjs/dist/src/core/geometry/Object';
 import {RBDAttribute, RBD_SHAPES, RBDShape} from '../../../core/physics/ammo/helper/_Base';
 import {TypeAssert} from '@polygonjs/polygonjs/dist/src/engine/poly/Assert';

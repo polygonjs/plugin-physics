@@ -17,7 +17,7 @@ import {CorePoint} from '@polygonjs/polygonjs/dist/src/core/geometry/Point';
 import {AmmoForceHelper} from '../../../core/physics/ammo/ForceHelper';
 import {PhysicsSolverSopOperation} from '../../operations/sop/PhysicsSolver';
 import {NodeParamsConfig, ParamConfig} from '@polygonjs/polygonjs/dist/src/engine/nodes/utils/params/ParamsConfig';
-import {Object3D} from 'three/src/core/Object3D';
+import {Object3D} from 'three';
 import {RBDAttributeMode, RBD_ATTRIBUTE_MODES} from '../../operations/sop/PhysicsRbdAttributes';
 import {AmmoRBDPointBodyHelper} from '../../../core/physics/ammo/helper/RBDPointBodyHelper';
 import {MapUtils} from '@polygonjs/polygonjs/dist/src/core/MapUtils';
