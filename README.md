@@ -1,3 +1,7 @@
+# RETIRED
+
+This repository is not used anymore, as the physics has been fully integrated into the [core engine](https://polygonjs.com) and [source](https://github.com/polygonjs/polygonjs)
+
 # Polygonjs Physics Plugin
 
 This adds several nodes to handle physics in the [Polygonjs webgl engine](https://polygonjs.com).
